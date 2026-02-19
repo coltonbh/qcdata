@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Changed
+
+- `Structure.connectivity` validator now automatically coerces bonds to be listed in ascending order and sorted, e.g., if passed `[(2, 0, 1.0), (1, 2, 2.0)]` as the original connectivity it will be coerced to `[(0, 2, 1.0), (1, 2, 2.0)]`. This makes the output deterministic and the comparison between different methods of determining connectivity more straightforward.
+
 ## [0.16.2] - 2025-11-19
 
 ### Added
