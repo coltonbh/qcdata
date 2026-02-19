@@ -286,7 +286,7 @@ class Structure(QCIOBaseModel):
         for i, j, _ in self.connectivity:
             adjacency[i].append(j)
             adjacency[j].append(i)
-        return adjacency
+        return dict(adjacency)
 
     @classmethod
     def from_xyz(
@@ -547,8 +547,14 @@ class Structure(QCIOBaseModel):
     def _validate_connectivity(
         cls, connectivity: list[tuple[int, int, float]]
     ) -> list[tuple[int, int, float]]:
-        """Coerce bonds use ascending atom indices and ensure no duplicates."""
+        """Coerce bonds use ascending atom indices and ensure no duplicates.
+        
+        Example:
+            Input: [(2, 0, 1.0), (1, 2, 2.0)]
+            Output: [(0, 2, 1.0), (1, 2, 2.0)]
+        """
         seen = set()
+        bonds_ascending = []
         for bond in connectivity:
             pair = tuple(sorted(bond[:2]))
             if pair in seen:
@@ -556,7 +562,8 @@ class Structure(QCIOBaseModel):
                     f"Duplicate bond found in connectivity between atoms: {pair}"
                 )
             seen.add(pair)
-        return connectivity
+            bonds_ascending.append((pair[0], pair[1], bond[2]))
+        return sorted(bonds_ascending)
 
     @field_serializer("connectivity")
     def _serialize_connectivity(self, connectivity, _info) -> list[list[float]]:

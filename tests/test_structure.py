@@ -279,3 +279,12 @@ def test_reorder_indices():
 
     assert struct.symbols == ["H", "H", "O"]
     assert np.array_equal(struct.geometry, [[0, 0, 1], [1, 0, 0], [0, 0, 0]])
+
+
+def test_connectivity_reordering():
+    struct = Structure(
+        symbols=["O", "H", "H"],
+        geometry=[[0, 0, 0], [0, 1, 0], [0, 0, 1]],
+        connectivity=[(2, 0, 1.0), (1, 0, 1.0)],
+    )
+    assert struct.connectivity == [(0, 1, 1.0), (0, 2, 1.0)]
