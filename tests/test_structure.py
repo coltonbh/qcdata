@@ -1,26 +1,26 @@
 import numpy as np
 import pytest
 
-from qcio import Structure
+from qcdata import Structure
 
-from .data import structures as qcio_structures
+from .data import structures as qcdata_structures
 
 
 def test_from_xyz(test_data_dir):
     xyz_str = (test_data_dir / "caffeine.xyz").read_text()
     caffeine = Structure.from_xyz(xyz_str)
-    assert caffeine.symbols == qcio_structures.caffeine.symbols
-    assert np.allclose(caffeine.geometry, qcio_structures.caffeine.geometry, rtol=1e-9)
-    assert caffeine.multiplicity == qcio_structures.caffeine.multiplicity
-    assert caffeine.charge == qcio_structures.caffeine.charge
+    assert caffeine.symbols == qcdata_structures.caffeine.symbols
+    assert np.allclose(caffeine.geometry, qcdata_structures.caffeine.geometry, rtol=1e-9)
+    assert caffeine.multiplicity == qcdata_structures.caffeine.multiplicity
+    assert caffeine.charge == qcdata_structures.caffeine.charge
     assert caffeine.identifiers.name == "caffeine"
 
 
-def test_from_xyz_non_qcio_comments(test_data_dir):
+def test_from_xyz_non_qcdata_comments(test_data_dir):
     xyz_str = (test_data_dir / "caffeine.xyz").read_text()
     caffeine = Structure.from_xyz(xyz_str)
-    assert caffeine.multiplicity == qcio_structures.caffeine.multiplicity
-    assert caffeine.charge == qcio_structures.caffeine.charge
+    assert caffeine.multiplicity == qcdata_structures.caffeine.multiplicity
+    assert caffeine.charge == qcdata_structures.caffeine.charge
     assert caffeine.extras["xyz_comments"] == [
         "IUPAC",
         "1,3,7-trimethylpurine-2,6-dione",
@@ -32,7 +32,7 @@ def test_to_file_xyz(test_data_dir, tmp_path):
     caffeine.save(tmp_path / "caffeine_copy.xyz")
     caffeine_copy = Structure.open(tmp_path / "caffeine_copy.xyz")
     assert caffeine_copy.symbols == caffeine.symbols
-    assert np.allclose(caffeine.geometry, qcio_structures.caffeine.geometry, rtol=1e-9)
+    assert np.allclose(caffeine.geometry, qcdata_structures.caffeine.geometry, rtol=1e-9)
     assert caffeine_copy.multiplicity == caffeine.multiplicity
     assert caffeine_copy.charge == caffeine.charge
 
@@ -48,7 +48,7 @@ def test_to_xyz_comments(test_data_dir):
     comments = xyz_str.split("\n")[1].split()
     assert "IUPAC" in comments
     assert "1,3,7-trimethylpurine-2,6-dione" in comments
-    assert "qcio__identifiers_name=caffeine" in comments
+    assert "qcdata__identifiers_name=caffeine" in comments
 
 
 def test_to_from_file_json(test_data_dir, tmp_path):
@@ -153,7 +153,7 @@ def test_ids_backwards_compatibility():
         ),
         (
             """2
-            qcio_charge=-3
+            qcdata_charge=-3
             H 0.0 0.0 0.0
             H 0.0 0.0 1.0
             """,
@@ -165,7 +165,7 @@ def test_ids_backwards_compatibility():
         ),
         (
             """2
-            qcio_charge=-3
+            qcdata_charge=-3
             H 0.0 0.0 0.0
             H 0.0 0.0 1.0
             """,
@@ -177,7 +177,7 @@ def test_ids_backwards_compatibility():
         ),
         (
             """2
-            qcio_multiplicity=4
+            qcdata_multiplicity=4
             H 0.0 0.0 0.0
             H 0.0 0.0 1.0
             """,
@@ -189,7 +189,7 @@ def test_ids_backwards_compatibility():
         ),
         (
             """2
-            qcio_multiplicity=4
+            qcdata_multiplicity=4
             H 0.0 0.0 0.0
             H 0.0 0.0 1.0
             """,
@@ -252,10 +252,10 @@ def test_multi_xyz(test_data_dir):
 
     # Make sure it works on a single structure
     caffeine = Structure.open(test_data_dir / "caffeine.xyz")
-    assert caffeine.symbols == qcio_structures.caffeine.symbols
-    assert np.allclose(caffeine.geometry, qcio_structures.caffeine.geometry, rtol=1e-9)
-    assert caffeine.multiplicity == qcio_structures.caffeine.multiplicity
-    assert caffeine.charge == qcio_structures.caffeine.charge
+    assert caffeine.symbols == qcdata_structures.caffeine.symbols
+    assert np.allclose(caffeine.geometry, qcdata_structures.caffeine.geometry, rtol=1e-9)
+    assert caffeine.multiplicity == qcdata_structures.caffeine.multiplicity
+    assert caffeine.charge == qcdata_structures.caffeine.charge
     assert caffeine.identifiers.name == "caffeine"
 
 

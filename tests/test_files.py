@@ -1,6 +1,6 @@
 import json
 
-from qcio.models import Files
+from qcdata.models import Files
 
 
 def test_binary_file(test_data_dir, tmp_path):

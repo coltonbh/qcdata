@@ -21,8 +21,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
-- `@field_validator` to `Structure.connectivity` to ensure no duplicate bonds. [#93](https://github.com/coltonbh/qcio/pull/93)
-- `Structure.adjacency_matrix` property that returns an adjacency matrix from the `.connectivity` information. [#93](https://github.com/coltonbh/qcio/pull/93)
+- `@field_validator` to `Structure.connectivity` to ensure no duplicate bonds. [#93](https://github.com/coltonbh/qcdata/pull/93)
+- `Structure.adjacency_matrix` property that returns an adjacency matrix from the `.connectivity` information. [#93](https://github.com/coltonbh/qcdata/pull/93)
 
 ## [0.16.0] - 2025-10-09
 
@@ -34,9 +34,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Removed
 
-- 🚨Python 3.9 support. Minimum supported version is now 3.10. [#91](https://github.com/coltonbh/qcio/pull/91)
+- 🚨Python 3.9 support. Minimum supported version is now 3.10. [#91](https://github.com/coltonbh/qcdata/pull/91)
 - All constants and periodic table data moved to [qcconst](https://github.com/coltonbh/qcconst).
-- All cheminformatics methods, including those that used `rdkit` and `openbabel` such as `rmsd` and `align`. Placed these algorithms into [qcinf](https://github.com/coltonbh/qcinf) so that `qcio` can remain purely about data structures. All future algorithms will go into `qcinf`.
+- All cheminformatics methods, including those that used `rdkit` and `openbabel` such as `rmsd` and `align`. Placed these algorithms into [qcinf](https://github.com/coltonbh/qcinf) so that `qcdata` can remain purely about data structures. All future algorithms will go into `qcinf`.
 
   - `Structure.from_smiles()` method in favor of functional API using the `qcinf` `smiles_to_structure` function.
 
@@ -68,20 +68,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 
 - Package dependency system changed from `poetry` to `uv` and build system from `poetry` to `hatchling`.
-- Renamed `ProgramOutput` -> `Results` to better match basic parlance ("The program produced these results"). [#90](https://github.com/coltonbh/qcio/pull/90)
-- Renamed `Results.results` (formerly `ProgramOutput.results`) attribute to `.data`. "The program produced this data." [#90](https://github.com/coltonbh/qcio/pull/90)
-- Renamed `Results.stdout` -> `Results.logs`. We are coalescing `stdout` and `stderr` logs anyways. Prefer using a common name scientists will understand. [#90](https://github.com/coltonbh/qcio/pull/90)
-- Renamed `SinglePointResults` -> `SinglePointData`. [#90](https://github.com/coltonbh/qcio/pull/90)
-- Renamed `OptimizationResults` -> `OptimizationData`. [#90](https://github.com/coltonbh/qcio/pull/90)
-- Renamed `ConformerSearchResults` -> `ConformerSearchData`. [#90](https://github.com/coltonbh/qcio/pull/90)
-- Added compatibility classes so old imports looking for these names still work but emit a `FutureWarning`. [#90](https://github.com/coltonbh/qcio/pull/90)
-- Renamed `QCIOModelBase` -> `QCIOBaseModel` to match `pydantic` semantics for `BaseModel`. [#90](https://github.com/coltonbh/qcio/pull/90)
-- Renamed `ProgramInput` -> `CalcSpec` and added a compatibility shim. [#90](https://github.com/coltonbh/qcio/pull/90)
-- Renamed `ProgramArgs` -> `CoreSpec` and added a compatibility shim. [#90](https://github.com/coltonbh/qcio/pull/90)
-- Renamed `ProgramArgsSub` -> `SubCalcSpec` and added a compatibility shim. [#90](https://github.com/coltonbh/qcio/pull/90)
-- Renamed `DualProgramInput` -> `CompositeCalcSpec` and added a compatibility shim. [#90](https://github.com/coltonbh/qcio/pull/90)
-- Renamed `FileInput` -> `FileSpec` and added a compatibility shim. [#90](https://github.com/coltonbh/qcio/pull/90)
-- Backwards compatibility shim updated from `Results.__init__` override to `@model_validator(mode="before")`. [#90](https://github.com/coltonbh/qcio/pull/90)
+- Renamed `ProgramOutput` -> `Results` to better match basic parlance ("The program produced these results"). [#90](https://github.com/coltonbh/qcdata/pull/90)
+- Renamed `Results.results` (formerly `ProgramOutput.results`) attribute to `.data`. "The program produced this data." [#90](https://github.com/coltonbh/qcdata/pull/90)
+- Renamed `Results.stdout` -> `Results.logs`. We are coalescing `stdout` and `stderr` logs anyways. Prefer using a common name scientists will understand. [#90](https://github.com/coltonbh/qcdata/pull/90)
+- Renamed `SinglePointResults` -> `SinglePointData`. [#90](https://github.com/coltonbh/qcdata/pull/90)
+- Renamed `OptimizationResults` -> `OptimizationData`. [#90](https://github.com/coltonbh/qcdata/pull/90)
+- Renamed `ConformerSearchResults` -> `ConformerSearchData`. [#90](https://github.com/coltonbh/qcdata/pull/90)
+- Added compatibility classes so old imports looking for these names still work but emit a `FutureWarning`. [#90](https://github.com/coltonbh/qcdata/pull/90)
+- Renamed `QCDataModelBase` -> `QCDataBaseModel` to match `pydantic` semantics for `BaseModel`. [#90](https://github.com/coltonbh/qcdata/pull/90)
+- Renamed `ProgramInput` -> `CalcSpec` and added a compatibility shim. [#90](https://github.com/coltonbh/qcdata/pull/90)
+- Renamed `ProgramArgs` -> `CoreSpec` and added a compatibility shim. [#90](https://github.com/coltonbh/qcdata/pull/90)
+- Renamed `ProgramArgsSub` -> `SubCalcSpec` and added a compatibility shim. [#90](https://github.com/coltonbh/qcdata/pull/90)
+- Renamed `DualProgramInput` -> `CompositeCalcSpec` and added a compatibility shim. [#90](https://github.com/coltonbh/qcdata/pull/90)
+- Renamed `FileInput` -> `FileSpec` and added a compatibility shim. [#90](https://github.com/coltonbh/qcdata/pull/90)
+- Backwards compatibility shim updated from `Results.__init__` override to `@model_validator(mode="before")`. [#90](https://github.com/coltonbh/qcdata/pull/90)
 
 ## [0.14.0] - 2025-04-01
 
@@ -141,13 +141,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
-- `qcio.models.utils.to_multi_xyz()` function that accepts an array of structures and converts them to a multi-xyz string.
+- `qcdata.models.utils.to_multi_xyz()` function that accepts an array of structures and converts them to a multi-xyz string.
 
 ## [0.12.2] - 2025-01-29
 
 ### Changed
 
-- Updated `numpy` dependency to support both `numpy` `v1` or `v2`. `qcio` does not rely upon any updated `numpy 2` API so no changes were made to the code.
+- Updated `numpy` dependency to support both `numpy` `v1` or `v2`. `qcdata` does not rely upon any updated `numpy 2` API so no changes were made to the code.
 
 ## [0.12.1] - 2025-01-15
 
@@ -241,8 +241,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - `CNAME` file to `/docs` directory.
 - `data_source` and `data_url` to `periodic_table` docstring.
-- `Structure.from_xyz` and `Structure.to_xyz` now support pulling additional (non `qcio_`) comments into `Structure.extras['xyz_comments']` and serializing these comments back into the `xyz` string.
-- `Structure.from_xyz` and `Structure.to_xyz` support pulling in and serializing `qcio__identifiers_*` in the `xyz` comments line.
+- `Structure.from_xyz` and `Structure.to_xyz` now support pulling additional (non `qcdata_`) comments into `Structure.extras['xyz_comments']` and serializing these comments back into the `xyz` string.
+- `Structure.from_xyz` and `Structure.to_xyz` support pulling in and serializing `qcdata__identifiers_*` in the `xyz` comments line.
 - `Structure.from_xyz_multi(xyz_str: str) -> List[Structure]` to return a list of `Structure` objects from a multi-structure xyz file.
 - `Structure.open` now supports multi-structure xyz files and will return a list of Structure objects.
 - New `CalcType.conformer_search` and `ConformerSearchResults` for conformer search calculations.
@@ -251,7 +251,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
-- Documentation website available at <https://qcio.coltonhicks.com/>.
+- Documentation website available at <https://qcdata.coltonhicks.com/>.
 
 ### Removed
 
@@ -267,8 +267,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
-- Install all extra features with `pip install qcio[all]`.
-- Better error messaging if `qcio.view` is imported but `view` dependencies are not installed.
+- Install all extra features with `pip install qcdata[all]`.
+- Better error messaging if `qcdata.view` is imported but `view` dependencies are not installed.
 - `PeriodicTable.number(number: int) -> Atom` to lookup atoms by atomic number.
 - Multi-structure SMILES support for `Structure.from_smiles` using `Open Babel`.
   ```python
@@ -305,7 +305,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Periodic Table with simple interface.
 
   ```python
-  from qcio.constants import periodic_table as pt
+  from qcdata.constants import periodic_table as pt
 
   pt.He.symbol
   pt.He.number
@@ -338,16 +338,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
-- ✨`view`✨ module that enables simple viewing of `Structures` and `ProgramOutput` objects for easy visual analysis and comparison in Jupyter Notebooks. Use with `from qcio import view` and then `view.view(prog_output1, prog_output2, ...)` inside a Jupyter Notebook. See `README.md` for more details.
+- ✨`view`✨ module that enables simple viewing of `Structures` and `ProgramOutput` objects for easy visual analysis and comparison in Jupyter Notebooks. Use with `from qcdata import view` and then `view.view(prog_output1, prog_output2, ...)` inside a Jupyter Notebook. See `README.md` for more details.
 
 ### Changed
 
 - Refactored `ProgramOutput.files` into the `.results` attribute:
-  - `ProgramOutput` now inherits from `QCIOModelBase`.
+  - `ProgramOutput` now inherits from `QCDataModelBase`.
   - `SinglePointResults` and `OptimizationResults` inherit from `Files`.
     - This means `SinglePointResults` and `OptimizationResults` both return `True` for `isinstance(obj, Files)`.
   - `Files` has been added to `Results` (a valid `ResultsType`).
-  - 🚨 BREAKING CHANGE: Removed awkward `NoResults` object from `qcio`. Realizing that `Files` is the correct base case for `.results` (files may exist for all failed or successful calculations) enabled this change.
+  - 🚨 BREAKING CHANGE: Removed awkward `NoResults` object from `qcdata`. Realizing that `Files` is the correct base case for `.results` (files may exist for all failed or successful calculations) enabled this change.
   - `ProgramOutput.results: ResultsType` now has no default value.
   - This is more logically consistent with the idea that all program results--including files--are found at `.results`. Structured results objects like `SinglePointResults` and `OptimizationResults` essentially parse out data from these files into structured data. `FileInput` calculations behave just like structured calculations now with their outputs (the files produced by the program) available in `.results`. This matches the metal model for input objects that start with `FileInput` and then layer structure onto common values like `.model`, `keywords`, and `calctype`.
     - This means that `FileInput` calculations now produce a `ProgramOutput[FileInput, Files]` object instead of the former `ProgramOutput[FileInput, NoResults]` object. This same change holds for failed single point calculations or failed optimization calculations with no computed results.
@@ -363,7 +363,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 
 - `OptimizationResults.trajectory` may contain a series of successful `ProgramOutput[..., SinglePointResults]` objects and then a failed `ProgramOutput[..., NoResults]` object. In this case we set the `.energies` property of the last value to `nan` for the failed calculation rather than `0.0`.
-- Updated `QCIOModelBase.__repr_args__` so that `.success` is always shown in the repr, even if `False`.
+- Updated `QCDataModelBase.__repr_args__` so that `.success` is always shown in the repr, even if `False`.
 - Updated `ProgramOutput.__repr_args__` to always show `.success` first. This helps with `ProgramOutput[..., OptimizationsResults]` where it isn't immediately obvious the calculation has failed from the printed string because `.results` isn't `NoResults`.
 
 ## [0.10.4] - 2024-07-15
@@ -440,7 +440,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
-- `Molecule.atomic_numbers` property which uses `qcio.constants.ELEMENTS` to map atomic symbols to atomic numbers.
+- `Molecule.atomic_numbers` property which uses `qcdata.constants.ELEMENTS` to map atomic symbols to atomic numbers.
 - Generic `ProgramOutput[InputType, ResultsType]` class to handle all program outputs.
 
 ### Removed
@@ -468,12 +468,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
-- `py.typed` file to enable type checking in other projects that use `qcio`.
+- `py.typed` file to enable type checking in other projects that use `qcdata`.
 
 ### Changed
 
 - Updated `black`.
-- Added `fix_com=True` and `fix_orientation=True` to default conversion from `qcio.Molecule` to `qcelemental.Molecule` objects so that qcel doesn't translate or rotate the molecule unsuspectingly without the user's consent. See default behaviors [here](https://github.com/MolSSI/QCElemental/blob/8e5a8cff52a6438ff9d6c1c6bbf1aeb4f02f12e1/qcelemental/models/molecule.py#L262-L281).
+- Added `fix_com=True` and `fix_orientation=True` to default conversion from `qcdata.Molecule` to `qcelemental.Molecule` objects so that qcel doesn't translate or rotate the molecule unsuspectingly without the user's consent. See default behaviors [here](https://github.com/MolSSI/QCElemental/blob/8e5a8cff52a6438ff9d6c1c6bbf1aeb4f02f12e1/qcelemental/models/molecule.py#L262-L281).
 - Renamed `SubProgramArgs` to `SubProgramInput` to be more consistent with the naming convention of the other input objects.
 
 ## [0.8.0] - 2024-01-12
@@ -495,7 +495,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 
 - `Molecule._to_xyz()` is now a public method `Molecule.to_xyz()` that returns an xyz string rather than writing an xyz file to disk.
-- Hoisted `utils.json_dumps` to `qcio.json_dumps` for easier import.
+- Hoisted `utils.json_dumps` to `qcdata.json_dumps` for easier import.
 
 ## [0.7.0] - 2023-09-19
 
@@ -524,14 +524,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
-- `qcio.utils.json_dumps` for serializing `pydantic` objects or lists of objects. Helpful for serializing requests to send of HTTP.
+- `qcdata.utils.json_dumps` for serializing `pydantic` objects or lists of objects. Helpful for serializing requests to send of HTTP.
 - `typos` pre-commit check.
 - `@classmethod` decorator to `@field_validator` functions as per [pydantic docs](https://docs.pydantic.dev/latest/usage/validators/#field-validators).
 - `SinglePointResults.scf_dipole_moment`.
 
 ### Fixed
 
-- Removed invalid objects in `qcio.__init__.py.__all__`.
+- Removed invalid objects in `qcdata.__init__.py.__all__`.
 
 ### Changed
 
@@ -643,65 +643,65 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   - `SinglePointComputedProperties`
   - `Wavefunction`
 
-[unreleased]: https://github.com/coltonbh/qcio/compare/0.16.2...HEAD
-[0.16.2]: https://github.com/coltonbh/qcio/releases/tag/0.16.2
-[0.16.1]: https://github.com/coltonbh/qcio/releases/tag/0.16.1
-[0.16.0]: https://github.com/coltonbh/qcio/releases/tag/0.16.0
-[0.15.0]: https://github.com/coltonbh/qcio/releases/tag/0.15.0
-[0.14.0]: https://github.com/coltonbh/qcio/releases/tag/0.14.0
-[0.13.1]: https://github.com/coltonbh/qcio/releases/tag/0.13.1
-[0.13.0]: https://github.com/coltonbh/qcio/releases/tag/0.13.0
-[0.12.4]: https://github.com/coltonbh/qcio/releases/tag/0.12.4
-[0.12.3]: https://github.com/coltonbh/qcio/releases/tag/0.12.3
-[0.12.2]: https://github.com/coltonbh/qcio/releases/tag/0.12.2
-[0.12.1]: https://github.com/coltonbh/qcio/releases/tag/0.12.1
-[0.12.0]: https://github.com/coltonbh/qcio/releases/tag/0.12.0
-[0.11.17]: https://github.com/coltonbh/qcio/releases/tag/0.11.17
-[0.11.16]: https://github.com/coltonbh/qcio/releases/tag/0.11.16
-[0.11.15]: https://github.com/coltonbh/qcio/releases/tag/0.11.15
-[0.11.14]: https://github.com/coltonbh/qcio/releases/tag/0.11.14
-[0.11.13]: https://github.com/coltonbh/qcio/releases/tag/0.11.13
-[0.11.12]: https://github.com/coltonbh/qcio/releases/tag/0.11.12
-[0.11.11]: https://github.com/coltonbh/qcio/releases/tag/0.11.11
-[0.11.10]: https://github.com/coltonbh/qcio/releases/tag/0.11.10
-[0.11.9]: https://github.com/coltonbh/qcio/releases/tag/0.11.9
-[0.11.8]: https://github.com/coltonbh/qcio/releases/tag/0.11.8
-[0.11.7]: https://github.com/coltonbh/qcio/releases/tag/0.11.7
-[0.11.6]: https://github.com/coltonbh/qcio/releases/tag/0.11.6
-[0.11.5]: https://github.com/coltonbh/qcio/releases/tag/0.11.5
-[0.11.4]: https://github.com/coltonbh/qcio/releases/tag/0.11.4
-[0.11.3]: https://github.com/coltonbh/qcio/releases/tag/0.11.3
-[0.11.2]: https://github.com/coltonbh/qcio/releases/tag/0.11.2
-[0.11.1]: https://github.com/coltonbh/qcio/releases/tag/0.11.1
-[0.11.0]: https://github.com/coltonbh/qcio/releases/tag/0.11.0
-[0.10.5]: https://github.com/coltonbh/qcio/releases/tag/0.10.5
-[0.10.4]: https://github.com/coltonbh/qcio/releases/tag/0.10.4
-[0.10.3]: https://github.com/coltonbh/qcio/releases/tag/0.10.3
-[0.10.2]: https://github.com/coltonbh/qcio/releases/tag/0.10.2
-[0.10.1]: https://github.com/coltonbh/qcio/releases/tag/0.10.1
-[0.10.0]: https://github.com/coltonbh/qcio/releases/tag/0.10.0
-[0.9.3]: https://github.com/coltonbh/qcio/releases/tag/0.9.3
-[0.9.2]: https://github.com/coltonbh/qcio/releases/tag/0.9.2
-[0.9.1]: https://github.com/coltonbh/qcio/releases/tag/0.9.1
-[0.9.0]: https://github.com/coltonbh/qcio/releases/tag/0.9.0
-[0.8.2]: https://github.com/coltonbh/qcio/releases/tag/0.8.2
-[0.8.1]: https://github.com/coltonbh/qcio/releases/tag/0.8.1
-[0.8.0]: https://github.com/coltonbh/qcio/releases/tag/0.8.0
-[0.7.1]: https://github.com/coltonbh/qcio/releases/tag/0.7.1
-[0.7.0]: https://github.com/coltonbh/qcio/releases/tag/0.7.0
-[0.6.1]: https://github.com/coltonbh/qcio/releases/tag/0.6.1
-[0.6.0]: https://github.com/coltonbh/qcio/releases/tag/0.6.0
-[0.5.1]: https://github.com/coltonbh/qcio/releases/tag/0.5.1
-[0.5.0]: https://github.com/coltonbh/qcio/releases/tag/0.5.0
-[0.4.2]: https://github.com/coltonbh/qcio/releases/tag/0.4.2
-[0.4.1]: https://github.com/coltonbh/qcio/releases/tag/0.4.1
-[0.4.0]: https://github.com/coltonbh/qcio/releases/tag/0.4.0
-[0.3.5]: https://github.com/coltonbh/qcio/releases/tag/0.3.5
-[0.3.4]: https://github.com/coltonbh/qcio/releases/tag/0.3.4
-[0.3.3]: https://github.com/coltonbh/qcio/releases/tag/0.3.3
-[0.3.2]: https://github.com/coltonbh/qcio/releases/tag/0.3.2
-[0.3.1]: https://github.com/coltonbh/qcio/releases/tag/0.3.1
-[0.3.0]: https://github.com/coltonbh/qcio/releases/tag/0.3.0
-[0.2.1]: https://github.com/coltonbh/qcio/releases/tag/0.2.1
-[0.2.0]: https://github.com/coltonbh/qcio/releases/tag/0.2.0
-[0.1.0]: https://github.com/coltonbh/qcio/releases/tag/0.1.0
+[unreleased]: https://github.com/coltonbh/qcdata/compare/0.16.2...HEAD
+[0.16.2]: https://github.com/coltonbh/qcdata/releases/tag/0.16.2
+[0.16.1]: https://github.com/coltonbh/qcdata/releases/tag/0.16.1
+[0.16.0]: https://github.com/coltonbh/qcdata/releases/tag/0.16.0
+[0.15.0]: https://github.com/coltonbh/qcdata/releases/tag/0.15.0
+[0.14.0]: https://github.com/coltonbh/qcdata/releases/tag/0.14.0
+[0.13.1]: https://github.com/coltonbh/qcdata/releases/tag/0.13.1
+[0.13.0]: https://github.com/coltonbh/qcdata/releases/tag/0.13.0
+[0.12.4]: https://github.com/coltonbh/qcdata/releases/tag/0.12.4
+[0.12.3]: https://github.com/coltonbh/qcdata/releases/tag/0.12.3
+[0.12.2]: https://github.com/coltonbh/qcdata/releases/tag/0.12.2
+[0.12.1]: https://github.com/coltonbh/qcdata/releases/tag/0.12.1
+[0.12.0]: https://github.com/coltonbh/qcdata/releases/tag/0.12.0
+[0.11.17]: https://github.com/coltonbh/qcdata/releases/tag/0.11.17
+[0.11.16]: https://github.com/coltonbh/qcdata/releases/tag/0.11.16
+[0.11.15]: https://github.com/coltonbh/qcdata/releases/tag/0.11.15
+[0.11.14]: https://github.com/coltonbh/qcdata/releases/tag/0.11.14
+[0.11.13]: https://github.com/coltonbh/qcdata/releases/tag/0.11.13
+[0.11.12]: https://github.com/coltonbh/qcdata/releases/tag/0.11.12
+[0.11.11]: https://github.com/coltonbh/qcdata/releases/tag/0.11.11
+[0.11.10]: https://github.com/coltonbh/qcdata/releases/tag/0.11.10
+[0.11.9]: https://github.com/coltonbh/qcdata/releases/tag/0.11.9
+[0.11.8]: https://github.com/coltonbh/qcdata/releases/tag/0.11.8
+[0.11.7]: https://github.com/coltonbh/qcdata/releases/tag/0.11.7
+[0.11.6]: https://github.com/coltonbh/qcdata/releases/tag/0.11.6
+[0.11.5]: https://github.com/coltonbh/qcdata/releases/tag/0.11.5
+[0.11.4]: https://github.com/coltonbh/qcdata/releases/tag/0.11.4
+[0.11.3]: https://github.com/coltonbh/qcdata/releases/tag/0.11.3
+[0.11.2]: https://github.com/coltonbh/qcdata/releases/tag/0.11.2
+[0.11.1]: https://github.com/coltonbh/qcdata/releases/tag/0.11.1
+[0.11.0]: https://github.com/coltonbh/qcdata/releases/tag/0.11.0
+[0.10.5]: https://github.com/coltonbh/qcdata/releases/tag/0.10.5
+[0.10.4]: https://github.com/coltonbh/qcdata/releases/tag/0.10.4
+[0.10.3]: https://github.com/coltonbh/qcdata/releases/tag/0.10.3
+[0.10.2]: https://github.com/coltonbh/qcdata/releases/tag/0.10.2
+[0.10.1]: https://github.com/coltonbh/qcdata/releases/tag/0.10.1
+[0.10.0]: https://github.com/coltonbh/qcdata/releases/tag/0.10.0
+[0.9.3]: https://github.com/coltonbh/qcdata/releases/tag/0.9.3
+[0.9.2]: https://github.com/coltonbh/qcdata/releases/tag/0.9.2
+[0.9.1]: https://github.com/coltonbh/qcdata/releases/tag/0.9.1
+[0.9.0]: https://github.com/coltonbh/qcdata/releases/tag/0.9.0
+[0.8.2]: https://github.com/coltonbh/qcdata/releases/tag/0.8.2
+[0.8.1]: https://github.com/coltonbh/qcdata/releases/tag/0.8.1
+[0.8.0]: https://github.com/coltonbh/qcdata/releases/tag/0.8.0
+[0.7.1]: https://github.com/coltonbh/qcdata/releases/tag/0.7.1
+[0.7.0]: https://github.com/coltonbh/qcdata/releases/tag/0.7.0
+[0.6.1]: https://github.com/coltonbh/qcdata/releases/tag/0.6.1
+[0.6.0]: https://github.com/coltonbh/qcdata/releases/tag/0.6.0
+[0.5.1]: https://github.com/coltonbh/qcdata/releases/tag/0.5.1
+[0.5.0]: https://github.com/coltonbh/qcdata/releases/tag/0.5.0
+[0.4.2]: https://github.com/coltonbh/qcdata/releases/tag/0.4.2
+[0.4.1]: https://github.com/coltonbh/qcdata/releases/tag/0.4.1
+[0.4.0]: https://github.com/coltonbh/qcdata/releases/tag/0.4.0
+[0.3.5]: https://github.com/coltonbh/qcdata/releases/tag/0.3.5
+[0.3.4]: https://github.com/coltonbh/qcdata/releases/tag/0.3.4
+[0.3.3]: https://github.com/coltonbh/qcdata/releases/tag/0.3.3
+[0.3.2]: https://github.com/coltonbh/qcdata/releases/tag/0.3.2
+[0.3.1]: https://github.com/coltonbh/qcdata/releases/tag/0.3.1
+[0.3.0]: https://github.com/coltonbh/qcdata/releases/tag/0.3.0
+[0.2.1]: https://github.com/coltonbh/qcdata/releases/tag/0.2.1
+[0.2.0]: https://github.com/coltonbh/qcdata/releases/tag/0.2.0
+[0.1.0]: https://github.com/coltonbh/qcdata/releases/tag/0.1.0

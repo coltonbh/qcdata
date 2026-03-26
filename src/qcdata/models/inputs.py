@@ -162,7 +162,7 @@ class ProgramInput(ProgramArgs, _StructureKeywordsMixin):
 
     Example:
         ```python
-        from qcio.models import ProgramInput, Structure
+        from qcdata.models import ProgramInput, Structure
 
         struct = Structure.open("path/to/structure.xyz")
 
@@ -201,7 +201,7 @@ class DualProgramInput(ProgramArgsSub, ProgramInput):
 
     Example:
         ```python
-        from qcio.models import DualProgramInput, ProgramArgs, Structure
+        from qcdata.models import DualProgramInput, ProgramArgs, Structure
 
         struct = Structure.open("path/to/structure.xyz")
 

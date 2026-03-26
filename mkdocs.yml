@@ -1,5 +1,5 @@
-site_name: Quantum Chemistry I/O (QCIO)
-site_url: https://qcio.coltonhicks.com/
+site_name: Quantum Chemistry Data (QCDATA)
+site_url: https://qcdata.coltonhicks.com/
 theme:
   name: material
   palette:
@@ -37,7 +37,7 @@ theme:
   icon:
     repo: fontawesome/brands/github-alt
 
-repo_url: https://github.com/coltonbh/qcio
+repo_url: https://github.com/coltonbh/qcdata
 edit_uri: edit/master/docs/
 site_author: Colton Hicks
 plugins:
@@ -93,13 +93,13 @@ markdown_extensions:
   - markdown_include.include
 
 watch:
-  - src/qcio
+  - src/qcdata
   - docs
 
 nav:
   - Getting Started:
-      - Welcome to qcio: index.md
-      - Why use qcio?: why.md
+      - Welcome to qcdata: index.md
+      - Why use qcdata?: why.md
   - API Documentation:
       - Overview: api/overview.md
       - Structure: api/structure.md
@@ -113,11 +113,11 @@ nav:
           - CalcType: api/calctype.md
           - Model: api/model.md
           - Provenance: api/provenance.md
-          - QCIOBaseModel: api/qciobasemodel.md
+          - QCDataBaseModel: api/qcdatabasemodel.md
           - LengthUnit: api/lengthunit.md
   - ✨Visualizations✨:
       - Overview: visualizations/overview.md
       - Structure: visualizations/structure.ipynb
       - Results: visualizations/results.ipynb
       - Core Views: visualizations/coreviews.ipynb
-  - Changelog: https://github.com/coltonbh/qcio/blob/master/CHANGELOG.md
+  - Changelog: https://github.com/coltonbh/qcdata/blob/master/CHANGELOG.md

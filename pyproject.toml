@@ -1,5 +1,5 @@
 [project]
-name = "qcio"
+name = "qcdata"
 version = "0.16.2"
 description = "Beautiful and user friendly data structures for quantum chemistry."
 readme = "README.md"
@@ -31,12 +31,12 @@ classifiers = [
     "Topic :: Software Development :: Libraries",
 ]
 [project.urls]
-Homepage = "https://github.com/coltonbh/qcio"
-Documentation = "https://qcio.coltonhicks.com"
-Source = "https://github.com/coltonbh/qcio"
-Changelog = "https://github.com/coltonbh/qcio/blob/master/CHANGELOG.md"
-"Bug Tracker" = "https://github.com/coltonbh/qcio/issues"
-repository = "https://github.com/coltonbh/qcio"
+Homepage = "https://github.com/coltonbh/qcdata"
+Documentation = "https://qcdata.coltonhicks.com"
+Source = "https://github.com/coltonbh/qcdata"
+Changelog = "https://github.com/coltonbh/qcdata/blob/master/CHANGELOG.md"
+"Bug Tracker" = "https://github.com/coltonbh/qcdata/issues"
+repository = "https://github.com/coltonbh/qcdata"
 
 
 [project.optional-dependencies]
@@ -93,7 +93,7 @@ target-version = "py39"
 
 
 [tool.ruff.lint]
-isort = { known-first-party = ["qcio", "tests"] }
+isort = { known-first-party = ["qcdata", "tests"] }
 select = ["I", "F401"]
 
 [tool.coverage.run]

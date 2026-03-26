@@ -19,9 +19,9 @@ import numpy as np
 from pydantic import BaseModel, ValidationInfo, field_validator, model_validator
 from typing_extensions import Self
 
-from qcio.helper_types import SerializableNDArray
+from qcdata.helper_types import SerializableNDArray
 
-from .base_models import CalcType, Files, Provenance, QCIOBaseModel
+from .base_models import CalcType, Files, Provenance, QCDataBaseModel
 from .inputs import (
     FileInput,
     Inputs,
@@ -51,7 +51,7 @@ __all__ = [
 ]
 
 
-class Wavefunction(QCIOBaseModel):
+class Wavefunction(QCDataBaseModel):
     """The wavefunction for a single point calculation.
 
     Attributes:
@@ -362,10 +362,10 @@ class ConformerSearchData(Files):
         **rmsd_kwargs,
     ) -> tuple[list[Structure], SerializableNDArray]:
         """
-        !!! warning "Moved since *qcio* 0.15.0"
+        !!! warning "Moved since *qcdata* 0.15.0"
             This convenience method has moved to
             [`qcinf.filter_conformers`][qcinf.filter_conformers]
-            and this stub will be **removed** from *qcio* in a future release.
+            and this stub will be **removed** from *qcdata* in a future release.
 
             ```python
             from qcinf import filter_conformers
@@ -403,14 +403,14 @@ Data = Union[Files, StructuredData]
 DataType = TypeVar("DataType", bound=Data)
 
 
-class Results(QCIOBaseModel, Generic[ProgramInputType, DataType]):
+class Results(QCDataBaseModel, Generic[ProgramInputType, DataType]):
     """The core results object from a quantum chemistry calculation.
 
     Attributes:
-        input_data: The input data for the calculation. Any of `qcio.Inputs`.
+        input_data: The input data for the calculation. Any of `qcdata.Inputs`.
         success: Whether the calculation was successful.
         data: The data from the calculation. Contains parsed values and files.
-            Any of `qcio.Data`.
+            Any of `qcdata.Data`.
         logs: The logs from the calculation.
         traceback: The traceback from the calculation, if it failed.
         provenance: The provenance information for the calculation.

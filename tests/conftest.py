@@ -3,7 +3,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from qcio import (
+from qcdata import (
     DualProgramInput,
     FileInput,
     Files,
@@ -13,7 +13,7 @@ from qcio import (
     Results,
     SinglePointData,
 )
-from qcio.utils import water as water_struct
+from qcdata.utils import water as water_struct
 
 
 @pytest.fixture
@@ -121,7 +121,7 @@ def results(prog_input_factory, sp_data):
         success=True,
         logs="program standard out...",
         data=sp_data,
-        provenance={"program": "qcio-test-suite", "scratch_dir": "/tmp/qcio"},
+        provenance={"program": "qcdata-test-suite", "scratch_dir": "/tmp/qcdata"},
         extras={"some_extra": 1},
     )
 
@@ -136,7 +136,7 @@ def results_failure(prog_input_factory, sp_data):
         success=False,
         traceback="Traceback...",
         data=Files(),
-        provenance={"program": "qcio-test-suite", "scratch_dir": "/tmp/qcio"},
+        provenance={"program": "qcdata-test-suite", "scratch_dir": "/tmp/qcdata"},
         extras={"some_extra": 1},
     )
 

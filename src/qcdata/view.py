@@ -1,8 +1,8 @@
 """
-Tools for visualizing qcio objects in Jupyter Notebooks.
+Tools for visualizing qcdata objects in Jupyter Notebooks.
 
 Design Decisions:
-    - The view function is the top-level method for viewing all qcio objects. It can
+    - The view function is the top-level method for viewing all qcdata objects. It can
         accept one or many objects and will determine the appropriate viewer to use.
     - All functions that begin with "generate" will return a string of HTML. If users
         want to use this HTML to create a custom view, they can do so. If they want to
@@ -31,7 +31,7 @@ from typing import Any, Union
 import numpy as np
 from qcconst import constants
 
-from qcio import (
+from qcdata import (
     ConformerSearchData,
     Data,
     DualProgramInput,
@@ -64,7 +64,7 @@ except ImportError as e:
         missing_packages.append("rdkit")
     raise ImportError(
         f"Missing dependencies: {', '.join(missing_packages)} required for the view "
-        "module. Please install them using: pip install qcio[view]"
+        "module. Please install them using: pip install qcdata[view]"
     )
 
 DEFAULT_WIDTH: int = 600
@@ -744,8 +744,8 @@ def view(
     **kwargs,
 ) -> None:
     """
-    Top level method for viewing all qcio objects. This should be the only method you
-    need to use to view any qcio object.
+    Top level method for viewing all qcdata objects. This should be the only method you
+    need to use to view any qcdata object.
 
     Args:
         *objs: The Results or Structure objects to view. May pass one or more
@@ -753,7 +753,7 @@ def view(
         **kwargs: Additional keyword arguments to pass to the viewer functions.
 
     Returns:
-        None. Displays the qcio objects in the Jupyter Notebook.
+        None. Displays the qcdata objects in the Jupyter Notebook.
     """
     if all([isinstance(o, Structure) for o in objs]) or all(
         isinstance(o, Structure) for lst in objs for o in lst

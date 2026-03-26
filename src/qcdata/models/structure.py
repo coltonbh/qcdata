@@ -9,9 +9,9 @@ from qcconst import periodic_table as pt
 from qcconst.constants import BOHR_TO_ANGSTROM
 from typing_extensions import Self
 
-from qcio.helper_types import SerializableNDArray
+from qcdata.helper_types import SerializableNDArray
 
-from .base_models import LengthUnit, QCIOBaseModel
+from .base_models import LengthUnit, QCDataBaseModel
 
 # from qcinf.algorithms import smiles_to_structure, structure_to_smiles
 from .utils import renamed_class
@@ -22,7 +22,7 @@ if TYPE_CHECKING:
 __all__ = ["Structure", "Identifiers", "Molecule"]
 
 
-class Identifiers(QCIOBaseModel):
+class Identifiers(QCDataBaseModel):
     """Structure identifiers.
 
     Attributes:
@@ -64,7 +64,7 @@ class Identifiers(QCIOBaseModel):
     pubchem_conformerid: str | None = None
 
 
-class Structure(QCIOBaseModel):
+class Structure(QCDataBaseModel):
     """A Structure object with atoms and their corresponding cartesian coordinates,
         charge, multiplicity, and identifiers such as name, smiles, etc.
 
@@ -101,7 +101,7 @@ class Structure(QCIOBaseModel):
 
         Example:
             ```python
-            from qcio import Structure
+            from qcdata import Structure
 
             structure = Structure(
                 symbols=["H", "O", "H"],
@@ -246,7 +246,7 @@ class Structure(QCIOBaseModel):
 
         Notes:
             If the filepath has a `.xyz` extension, the structure will be saved to an
-            XYZ file. qcio will automatically convert the geometry to Angstrom and add
+            XYZ file. qcdata will automatically convert the geometry to Angstrom and add
             the charge and multiplicity to the comments line of the XYZ file.
 
         Example:
@@ -306,9 +306,9 @@ class Structure(QCIOBaseModel):
                 will read from the XYZ string if set or default to 1.
 
         Note:
-            Will read qcio data such as `charge` and `multiplicity` from the comments
-            line with a `qcio_key=value` format (if it is present). Also will read in
-            qcio__identifiers_* keys and additional non-qcio comments.
+            Will read qcdata data such as `charge` and `multiplicity` from the comments
+            line with a `qcdata_key=value` format (if it is present). Also will read in
+            qcdata__identifiers_* keys and additional non-qcdata comments.
 
         Example:
             ```python
@@ -326,12 +326,12 @@ class Structure(QCIOBaseModel):
         other_comments: list[str] = []
 
         for item in lines[1].strip().split():
-            if item.startswith("qcio__identifiers_"):
-                key = item.split("=")[0].replace("qcio__identifiers_", "")
+            if item.startswith("qcdata__identifiers_"):
+                key = item.split("=")[0].replace("qcdata__identifiers_", "")
                 value = item.split("=")[1]
                 identifier_kwargs[key] = value
-            elif item.startswith("qcio_"):
-                key = item.split("=")[0].replace("qcio_", "")
+            elif item.startswith("qcdata_"):
+                key = item.split("=")[0].replace("qcdata_", "")
                 value = item.split("=")[1]
                 structure_kwargs[key] = value
             else:
@@ -427,27 +427,27 @@ class Structure(QCIOBaseModel):
             precision: The number of decimal places to include in the xyz file. Default
                 17 which captures all precision of float64.
         Notes:
-            Will add qcio data such as charge and multiplicity to the comments line with
-            a `qcio_key=value` format.
+            Will add qcdata data such as charge and multiplicity to the comments line with
+            a `qcdata_key=value` format.
         """
 
-        qcio_data = {  # These get added to comments line (line 2) in xyz file
-            "qcio_charge": self.charge,
-            "qcio_multiplicity": self.multiplicity,
+        qcdata_data = {  # These get added to comments line (line 2) in xyz file
+            "qcdata_charge": self.charge,
+            "qcdata_multiplicity": self.multiplicity,
         }
 
-        # Add identifiers to qcio_data
+        # Add identifiers to qcdata_data
         for key, value in self.identifiers.__dict__.items():
             if key != "extras" and value:
-                qcio_data[f"qcio__identifiers_{key}"] = value
+                qcdata_data[f"qcdata__identifiers_{key}"] = value
 
         assert isinstance(self.geometry, np.ndarray)  # For mypy
         geometry_angstrom = self.geometry * BOHR_TO_ANGSTROM
 
         xyz_lines = []
         xyz_lines.append(f"{len(self.symbols)}")
-        # Add qcio data to comments line
-        comments = f"{' '.join([f'{k}={v}' for k, v in qcio_data.items()])}"
+        # Add qcdata data to comments line
+        comments = f"{' '.join([f'{k}={v}' for k, v in qcdata_data.items()])}"
         # Add any other comments
         if xyz_comments := self.extras.get(self._xyz_comment_key, []):
             comments += " " + " ".join(xyz_comments)
@@ -479,7 +479,7 @@ class Structure(QCIOBaseModel):
         !! DEPRECATED !!
 
         This helper has been removed to **qcinf** (see `qcinf.structure_to_smiles`).
-        It will be removed from qcio in a future release.
+        It will be removed from qcdata in a future release.
         """
         warnings.warn(
             "`Structure.add_smiles()` has moved to `qcinf` and is no longer "

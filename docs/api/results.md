@@ -1,23 +1,23 @@
 # Results
 
-`Results` is the core object that captures all information from a QC calculation including all input data, the computed values and files (collectively called [`Data`](#data)), and additional metadata such as `logs` and [`Provenance`](./provenance.md) information. The `.data` attribute will correspond to the [`CalcType`](./calctype.md) requested, e.g., a [`SinglePointData`](#qcio.SinglePointData), [`OptimizationsData`](#qcio.OptimizationData), etc.
+`Results` is the core object that captures all information from a QC calculation including all input data, the computed values and files (collectively called [`Data`](#data)), and additional metadata such as `logs` and [`Provenance`](./provenance.md) information. The `.data` attribute will correspond to the [`CalcType`](./calctype.md) requested, e.g., a [`SinglePointData`](#qcdata.SinglePointData), [`OptimizationsData`](#qcdata.OptimizationData), etc.
 
-::: qcio.Results
+::: qcdata.Results
 options:
 members: false
 
 ## Data
 
-::: qcio.Data
+::: qcdata.Data
 
-::: qcio.SinglePointData
+::: qcdata.SinglePointData
 options:
 members: false
 
-::: qcio.OptimizationData
+::: qcdata.OptimizationData
 options:
 members: - structures - final_structure - energies - final_energy - to_xyz - save
 
-::: qcio.ConformerSearchData
+::: qcdata.ConformerSearchData
 
-::: qcio.Wavefunction
+::: qcdata.Wavefunction

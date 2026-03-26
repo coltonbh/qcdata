@@ -3,8 +3,8 @@
 import numpy as np
 from qcelemental.models import AtomicInput, AtomicResult
 
-# from qcio import ProgramFailure
-from qcio.qcel import from_qcel_output_results, to_qcel_input
+# from qcdata import ProgramFailure
+from qcdata.qcel import from_qcel_output_results, to_qcel_input
 
 
 def test_input_to_qcel(prog_input_factory):

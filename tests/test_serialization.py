@@ -1,4 +1,4 @@
-from qcio import Results
+from qcdata import Results
 
 
 def test_serialization_to_disk_json(results, tmp_path):

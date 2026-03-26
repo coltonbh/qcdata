@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 from pydantic import ValidationError
 
-from qcio import (
+from qcdata import (
     FileInput,
     Files,
     OptimizationData,
@@ -117,7 +117,7 @@ def test_return_result(prog_input_factory):
             "gradient": gradient,
             "hessian": hessian,
         },
-        provenance={"program": "qcio-test-suite"},
+        provenance={"program": "qcdata-test-suite"},
     )
     assert results.return_result == energy
     assert results.return_result == results.data.energy
@@ -141,7 +141,7 @@ def test_successful_result_serialization(results):
     assert deserialized == results
     assert deserialized.data == results.data
     assert deserialized.input_data == results.input_data
-    assert deserialized.provenance.program == "qcio-test-suite"
+    assert deserialized.provenance.program == "qcdata-test-suite"
     assert deserialized.logs == results.logs
     assert deserialized.extras == results.extras
     assert deserialized.return_result == results.return_result
@@ -219,7 +219,7 @@ def test_non_file_success_always_has_result(prog_input_factory):
             input_data=pi_energy,
             logs="program standard out...",
             data=None,
-            provenance={"program": "qcio-test-suite"},
+            provenance={"program": "qcdata-test-suite"},
         )
 
 
@@ -265,10 +265,10 @@ def test_pickle_serialization_of_program_output_parametrized(
     """This test checks that all the dynamic types are correctly set when
     deserializing a Results object. It also checks that the equality
     checks pass for the deserialized object. It also ensure that the types
-    set can be looked up by pickle in qcio.models.outputs.Results.s
+    set can be looked up by pickle in qcdata.models.outputs.Results.s
     """
 
-    provenance = Provenance(program="qcio-test-suite")
+    provenance = Provenance(program="qcdata-test-suite")
     traceback = None
     if success is False:
         traceback = "Fake traceback"
@@ -347,7 +347,7 @@ def test_pickle_serialization_of_program_output():
             energy=1.0,
             extras={"some_extra_result": 1},
         ),
-        provenance={"program": "qcio-test-suite", "scratch_dir": "/tmp/qcio"},
+        provenance={"program": "qcdata-test-suite", "scratch_dir": "/tmp/qcdata"},
         extras={"some_extra": 1},
     )
     # Generics specified at instantiation of Results
@@ -396,7 +396,7 @@ def test_compatibility_layer_for_files_on_results(prog_input_factory):
         input_data=energy_input,
         success=True,
         data=SinglePointData(energy=-1.0),
-        provenance={"program": "qcio-test-suite"},
+        provenance={"program": "qcdata-test-suite"},
         files=files,
     )
     assert po.data.files == files
@@ -416,7 +416,7 @@ def test_compatibility_layer_for_results_on_program_output(prog_input_factory):
         "input_data": energy_input,
         "success": True,
         "results": {"energy": -1.0},
-        "provenance": {"program": "qcio-test-suite"},
+        "provenance": {"program": "qcdata-test-suite"},
     }
     po = Results(**results_dict)
     assert po.data.energy == -1.0
@@ -430,7 +430,7 @@ def test_compatibility_layer_for_stdout_on_results(prog_input_factory):
         "input_data": energy_input,
         "success": True,
         "results": {"energy": -1.0},
-        "provenance": {"program": "qcio-test-suite"},
+        "provenance": {"program": "qcdata-test-suite"},
         "stdout": logs,
     }
     results = Results(**results_dict)

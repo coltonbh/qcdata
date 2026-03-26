@@ -1,6 +1,6 @@
 import json
 
-from qcio import FileInput
+from qcdata import FileInput
 
 
 def test_from_directory(test_data_dir):

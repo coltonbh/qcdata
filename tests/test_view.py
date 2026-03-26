@@ -1,5 +1,5 @@
-from qcio import OptimizationData, ProgramInput, Results
-from qcio.view import generate_optimization_plot
+from qcdata import OptimizationData, ProgramInput, Results
+from qcdata.view import generate_optimization_plot
 
 
 def test_generate_optimization_plot_with_single_prog_output_failure(

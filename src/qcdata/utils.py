@@ -1,4 +1,4 @@
-"""Utility functions for working with qcio objects."""
+"""Utility functions for working with qcdata objects."""
 
 from __future__ import annotations
 

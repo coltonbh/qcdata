@@ -1,4 +1,4 @@
-from qcio import *  # noqa: F403
+from qcdata import *  # noqa: F403
 
 
 def test_imports():
