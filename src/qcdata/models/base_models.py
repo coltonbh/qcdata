@@ -1,4 +1,4 @@
-"""The Base model from which all QCIO Model objects inherit."""
+"""The base model from which all QCData model objects inherit."""
 
 import json
 from abc import ABC
@@ -39,8 +39,8 @@ class LengthUnit(str, Enum):
         return f"'{self.name}'"  # pragma: no cover
 
 
-class QCIOBaseModel(BaseModel, ABC):
-    """Base Model for all QCIO objects.
+class QCDataBaseModel(BaseModel, ABC):
+    """Base model for all QCData objects.
 
     Attributes:
         version: The version of the schema.
@@ -49,7 +49,7 @@ class QCIOBaseModel(BaseModel, ABC):
     """
 
     # NOTE: No version for now until we have a stable schema
-    # Or maybe have version be version of qcio that generated the object?
+    # Or maybe have version be version of qcdata that generated the object?
     # version: ClassVar[Literal["v1"]] = "v1"
     extras: dict[str, Any] = {}
 
@@ -218,7 +218,7 @@ class QCIOBaseModel(BaseModel, ABC):
         return False
 
 
-class Files(QCIOBaseModel):
+class Files(QCDataBaseModel):
     """File model for handling string and binary data.
 
     Binary data is encoded as base64 strings during serialization.
@@ -338,7 +338,7 @@ class Files(QCIOBaseModel):
         ]
 
 
-class Provenance(QCIOBaseModel):
+class Provenance(QCDataBaseModel):
     """Provenance information for a QC program.
 
     Attributes:
@@ -387,7 +387,7 @@ class CalcType(str, Enum):
         return f"'{self.name}'"  # pragma: no cover
 
 
-class Model(QCIOBaseModel):
+class Model(QCDataBaseModel):
     """The model for the quantum chemistry calculation.
 
     Attributes:

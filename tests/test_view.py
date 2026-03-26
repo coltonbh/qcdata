@@ -1,5 +1,5 @@
-from qcio import OptimizationData, ProgramInput, Results
-from qcio.view import generate_optimization_plot
+from qcdata import OptimizationData, ProgramInput, ProgramOutput
+from qcdata.view import generate_optimization_plot
 
 
 def test_generate_optimization_plot_with_single_prog_output_failure(
@@ -7,7 +7,7 @@ def test_generate_optimization_plot_with_single_prog_output_failure(
 ):
     opt_input = prog_input_factory("optimization")
 
-    prog_output = Results[ProgramInput, OptimizationData](
+    prog_output = ProgramOutput[ProgramInput, OptimizationData](
         input_data=opt_input,
         success=False,
         traceback="Traceback...",

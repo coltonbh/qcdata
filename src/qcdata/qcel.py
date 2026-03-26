@@ -4,7 +4,7 @@ from typing import Any
 
 import numpy as np
 
-from qcio import ProgramInput, SinglePointData, Wavefunction
+from qcdata import ProgramInput, SinglePointData, Wavefunction
 
 # ---------------------------------------------------------------------------
 # Compatibility shim: NumPy 2.0 removed `np.core.defchararray`; everything
@@ -59,8 +59,8 @@ def from_qcel_output_results(
         qcel_output: The QCElemental v1 output schema representation of the output.
             May be a dict representing an AtomicResult or FailedOperation.
     """
-    # Collect values from keys that exist in qcio
-    qcio_to_qcel = {
+    # Collect values from keys that exist in qcdata
+    qcdata_to_qcel = {
         "calcinfo_natoms": "calcinfo_natom",
         "energy": "return_energy",
         "gradient": "return_gradient",
@@ -68,8 +68,8 @@ def from_qcel_output_results(
     }
     results = {}
     for key in SinglePointData.model_fields:
-        if key in qcio_to_qcel:
-            qcel_key = qcio_to_qcel[key]
+        if key in qcdata_to_qcel:
+            qcel_key = qcdata_to_qcel[key]
         else:
             qcel_key = key
 

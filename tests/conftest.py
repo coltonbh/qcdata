@@ -3,17 +3,17 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from qcio import (
+from qcdata import (
     DualProgramInput,
     FileInput,
     Files,
     OptimizationData,
     ProgramArgs,
     ProgramInput,
-    Results,
+    ProgramOutput,
     SinglePointData,
 )
-from qcio.utils import water as water_struct
+from qcdata.utils import water as water_struct
 
 
 @pytest.fixture
@@ -111,36 +111,36 @@ def sp_data():
 
 
 @pytest.fixture
-def results(prog_input_factory, sp_data):
-    """Successful Results object"""
+def prog_output(prog_input_factory, sp_data):
+    """Successful ProgramOutput object"""
     pi_energy = prog_input_factory("energy")
     sp_data = sp_data(pi_energy.structure)
 
-    return Results[ProgramInput, SinglePointData](
+    return ProgramOutput[ProgramInput, SinglePointData](
         input_data=pi_energy,
         success=True,
         logs="program standard out...",
         data=sp_data,
-        provenance={"program": "qcio-test-suite", "scratch_dir": "/tmp/qcio"},
+        provenance={"program": "qcdata-test-suite", "scratch_dir": "/tmp/qcdata"},
         extras={"some_extra": 1},
     )
 
 
 @pytest.fixture
 def results_failure(prog_input_factory, sp_data):
-    """Failed Results object"""
+    """Failed ProgramOutput object"""
     pi_energy = prog_input_factory("energy")
 
-    return Results[ProgramInput, Files](
+    return ProgramOutput[ProgramInput, Files](
         input_data=pi_energy,
         success=False,
         traceback="Traceback...",
         data=Files(),
-        provenance={"program": "qcio-test-suite", "scratch_dir": "/tmp/qcio"},
+        provenance={"program": "qcdata-test-suite", "scratch_dir": "/tmp/qcdata"},
         extras={"some_extra": 1},
     )
 
 
 @pytest.fixture
-def opt_data(results):
-    return OptimizationData(trajectory=[results])
+def opt_data(prog_output):
+    return OptimizationData(trajectory=[prog_output])

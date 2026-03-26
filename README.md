@@ -1,43 +1,43 @@
-# Quantum Chemistry I/O
+# Quantum Chemistry Data
 
-[![image](https://img.shields.io/pypi/v/qcio.svg)](https://pypi.python.org/pypi/qcio)
-[![image](https://img.shields.io/pypi/l/qcio.svg)](https://pypi.python.org/pypi/qcio)
-[![image](https://img.shields.io/pypi/pyversions/qcio.svg)](https://pypi.python.org/pypi/qcio)
-[![Actions status](https://github.com/coltonbh/qcio/workflows/Tests/badge.svg)](https://github.com/coltonbh/qcio/actions)
-[![Actions status](https://github.com/coltonbh/qcio/workflows/Basic%20Code%20Quality/badge.svg)](https://github.com/coltonbh/qcio/actions)
+[![image](https://img.shields.io/pypi/v/qcdata.svg)](https://pypi.python.org/pypi/qcdata)
+[![image](https://img.shields.io/pypi/l/qcdata.svg)](https://pypi.python.org/pypi/qcdata)
+[![image](https://img.shields.io/pypi/pyversions/qcdata.svg)](https://pypi.python.org/pypi/qcdata)
+[![Actions status](https://github.com/coltonbh/qcdata/workflows/Tests/badge.svg)](https://github.com/coltonbh/qcdata/actions)
+[![Actions status](https://github.com/coltonbh/qcdata/workflows/Basic%20Code%20Quality/badge.svg)](https://github.com/coltonbh/qcdata/actions)
 
 Elegant and intuitive data structures for quantum chemistry, featuring seamless Jupyter Notebook visualizations.
 
-`qcio` works in harmony with a suite of other quantum chemistry tools for fast, structured, and interoperable quantum chemistry.
+`qcdata` works in harmony with a suite of other quantum chemistry tools for fast, structured, and interoperable quantum chemistry.
 
 ## The QC Suite of Programs
 
 - [qcconst](https://github.com/coltonbh/qcconst) - NIST/CODATA2022 core physical constants, conversion factors, and a periodic table with clear source information for every value.
-- [qcio](https://github.com/coltonbh/qcio) - Elegant and intuitive data structures for quantum chemistry, featuring seamless Jupyter Notebook visualizations. [Documentation](https://qcio.coltonhicks.com)
- [qcinf](https://github.com/coltonbh/qcinf) - Cheminformatics algorithms and structure utilities such as `rmsd`, and alignment, using standardized [qcio](https://qcio.coltonhicks.com/) data structures.
-- [qccodec](https://github.com/coltonbh/qccodec) - A translation layer between quantum chemistry program inputs and outputs and structured `qcio` objects.
-- [qcop](https://github.com/coltonbh/qcop) - A package for operating quantum chemistry programs using `qcio` standardized data structures. Compatible with `TeraChem`, `psi4`, `QChem`, `NWChem`, `ORCA`, `Molpro`, `geomeTRIC` and many more.
+- [qcdata](https://github.com/coltonbh/qcdata) - Elegant and intuitive data structures for quantum chemistry, featuring seamless Jupyter Notebook visualizations. [Documentation](https://qcdata.coltonhicks.com)
+ [qcinf](https://github.com/coltonbh/qcinf) - Cheminformatics algorithms and structure utilities such as `rmsd`, and alignment, using standardized [qcdata](https://qcdata.coltonhicks.com/) data structures.
+- [qccodec](https://github.com/coltonbh/qccodec) - A translation layer between quantum chemistry program inputs and outputs and structured `qcdata` objects.
+- [qcop](https://github.com/coltonbh/qcop) - A package for operating quantum chemistry programs using `qcdata` standardized data structures. Compatible with `TeraChem`, `psi4`, `QChem`, `NWChem`, `ORCA`, `Molpro`, `geomeTRIC` and many more.
 - [BigChem](https://github.com/mtzgroup/bigchem) - A distributed application for running quantum chemistry calculations at scale across clusters of computers or the cloud. Bring multi-node scaling to your favorite quantum chemistry program.
 - `ChemCloud` - A [web application](https://github.com/mtzgroup/chemcloud-server) and associated [Python client](https://github.com/mtzgroup/chemcloud-client) for exposing a BigChem cluster securely over the internet.
 
 ## Installation
 
 ```bash
-python -m pip install qcio
+python -m pip install qcdata
 ```
 
 ## Quickstart
 
-`qcio` is built around a simple mental model: `Input` objects define quantum chemistry calculations, and a `Results` object defines the results.
+`qcdata` is built around a simple mental model: `Input` objects define quantum chemistry calculations, a `ProgramOutput` object captures each execution, and `Data` objects hold the structured output values.
 
-All `qcio` objects can be serialized and saved to disk by calling `.save("filename.json")` and loaded from disk by calling `.open("filename.json")`. `qcio` supports `json`, `yaml`, and `toml` file formats. Binary data will be automatically base64 encoded and decoded when saving and loading.
+All `qcdata` objects can be serialized and saved to disk by calling `.save("filename.json")` and loaded from disk by calling `.open("filename.json")`. `qcdata` supports `json`, `yaml`, and `toml` file formats. Binary data will be automatically base64 encoded and decoded when saving and loading.
 
 ### Input Objects
 
 #### CalcInput - Core input object for a single QC calculation.
 
 ```python
-from qcio import Structure, CalcInput
+from qcdata import Structure, CalcInput
 # xyz files or saved Structure objects can be opened from disk
 caffeine = Structure.open("caffeine.xyz")
 # Define the program input
@@ -72,7 +72,7 @@ caffeine.save("caffeine.toml")
 `CompositeCalcInput` objects can be used to power workflows that require multiple calculations. For example, a geometry optimization workflow might use `geomeTRIC` to power the optimization and use `terachem` to compute the energies and gradients.
 
 ```python
-from qcio import Structure, CompositeCalcInput
+from qcdata import Structure, CompositeCalcInput
 # xyz files or saved Structure objects can be opened from disk
 caffeine = Structure.open("caffeine.xyz")
 # Define the program input
@@ -91,7 +91,7 @@ prog_input = CompositeCalcInput(
 
 #### FileInput - Input object for a calculation using native file formats.
 
-`qcio` also supports the native file formats of each QC program with a `FileInput` object. Assume you have a directory like this with your input files for `psi4`:
+`qcdata` also supports the native file formats of each QC program with a `FileInput` object. Assume you have a directory like this with your input files for `psi4`:
 
 ```
 psi4/
@@ -103,7 +103,7 @@ psi4/
 You can collect these native files and any associated command line arguments needed to specify a calculation into a `FileInput` object like this:
 
 ```python
-from qcio import FileInput
+from qcdata import FileInput
 psi4_input = FileInput.from_directory("psi4")
 
 # All input files will be loaded into the `files` attribute
@@ -119,7 +119,7 @@ psi4_input.save_files("psi4")
 
 #### Modifying Input Objects
 
-Objects are immutable by default so if you want to modify an object cast it to a dictionary, make the desired modification, and then instantiate a new object. This prevents accidentally modifying objects that may already be referenced in other calculations--perhaps as `.input_data` on a `Results` object.
+Objects are immutable by default so if you want to modify an object cast it to a dictionary, make the desired modification, and then instantiate a new object. This prevents accidentally modifying objects that may already be referenced in other calculations, perhaps as `.input_data` on a `ProgramOutput` object.
 
 ```python
 # Cast to a dictionary and modify
@@ -129,9 +129,9 @@ new_input_dict["model"]["method"] = "b3lyp"
 new_prog_input = CalcInput(**new_input_dict)
 ```
 
-### Results
+### ProgramOutput
 
-Calculation values are stored in a `Results` object. `Results` may contain parsed data, files, logs, and additional details of the calculation. A `Results` object has the following attributes:
+Calculation values are stored in a `ProgramOutput` object. `ProgramOutput` contains parsed data, files, logs, and additional execution details. A `ProgramOutput` object has the following attributes:
 
 ```python
 output.input_data # Input data used for the calculation
@@ -144,13 +144,13 @@ output.provenance # Provenance information about the calculation
 output.extras # Any extra information not in the schema
 ```
 
-The `.data` attribute on a `Results` is polymorphic and may be either `Files`, `SinglePointData`, `OptimizationData`, `ConformerSearchData`, or any other `DataType` depending on the calculation requested. Available attributes for each data type can be found by calling `dir()` on the object.
+The `.data` attribute on a `ProgramOutput` is polymorphic and may be either `Files`, `SinglePointData`, `OptimizationData`, `ConformerSearchData`, or any other `DataType` depending on the calculation requested. Available attributes for each data type can be found by calling `dir()` on the object.
 
 ```python
 dir(results.data)
 ```
 
-Results can be saved to disk in json, yaml, or toml format by calling `.save("filename.{json/yaml/toml}")` and loaded from disk by calling `.open("filename.{json/yaml/toml}")`.
+Program outputs can be saved to disk in json, yaml, or toml format by calling `.save("filename.{json/yaml/toml}")` and loaded from disk by calling `.open("filename.{json/yaml/toml}")`.
 
 ## ✨ Visualization ✨
 
@@ -159,20 +159,20 @@ Visualize all your results with a single line of code!
 First install the visualization module:
 
 ```sh
-python -m pip install qcio[view]
+python -m pip install qcdata[view]
 ```
 
 or if your shell requires `''` around arguments with brackets:
 
 ```sh
-python -m pip install 'qcio[view]'
+python -m pip install 'qcdata[view]'
 ```
 
-Then in a Jupyter notebook import the `qcio` view module and call `view.view(...)` passing it one or any number of `qcio` objects you want to visualizing including `Structure` objects or any `Results` object. You may also pass an array of `titles` and/or `subtitles` to add additional information to the molecular structure display. If no titles are passed `qcio` with look for `Structure` identifiers such as a name or SMILES to label the `Structure`.
+Then in a Jupyter notebook import the `qcdata` view module and call `view.view(...)` passing it one or any number of `qcdata` objects you want to visualize, including `Structure` objects or any `ProgramOutput` object. You may also pass an array of `titles` and/or `subtitles` to add additional information to the molecular structure display. If no titles are passed `qcdata` will look for `Structure` identifiers such as a name or SMILES to label the `Structure`.
 
-![Structure Viewer](https://public.coltonhicks.com/assets/qcio/structure_viewer.png)
+![Structure Viewer](https://public.coltonhicks.com/assets/qcdata/structure_viewer.png)
 
-Seamless visualizations for `Results` objects make results analysis easy!
+Seamless visualizations for `ProgramOutput` objects make results analysis easy!
 
 ![Optimization Viewer](./docs/assets/optimization_viewer.png)
 
@@ -180,7 +180,7 @@ Single point calculations display their results in a table.
 
 ![Single Point Viewer](./docs/assets/single_point_viewer.png)
 
-If you want to use the HTML generated by the viewer to build your own dashboards use the functions inside of `qcio.view.py` that begin with the word `generate_` to create HTML you can insert into any dashboard.
+If you want to use the HTML generated by the viewer to build your own dashboards use the functions inside of `qcdata.view.py` that begin with the word `generate_` to create HTML you can insert into any dashboard.
 
 ## Development
 
@@ -192,4 +192,4 @@ uv sync --all-groups
 
 ## Support
 
-If you have any issues with `qcio` or would like to request a feature, please open an [issue](https://github.com/coltonbh/qcio/issues).
+If you have any issues with `qcdata` or would like to request a feature, please open an [issue](https://github.com/coltonbh/qcdata/issues).

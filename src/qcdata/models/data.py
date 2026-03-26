@@ -1,57 +1,41 @@
-"""End user results and data objects."""
+"""Structured output data objects."""
 
 from __future__ import annotations
 
-import sys
 import warnings
-from itertools import product
 from pathlib import Path
-from typing import (
-    Any,
-    Generic,
-    Literal,
-    TypeVar,
-    Union,
-    get_args,
-)
+from typing import TYPE_CHECKING, Any, TypeVar, Union
 
 import numpy as np
 from pydantic import BaseModel, ValidationInfo, field_validator, model_validator
 from typing_extensions import Self
 
-from qcio.helper_types import SerializableNDArray
+from qcdata.helper_types import SerializableNDArray
 
-from .base_models import CalcType, Files, Provenance, QCIOBaseModel
-from .inputs import (
-    FileInput,
-    Inputs,
-    ProgramInput,
-)
-from .inputs import (
-    InputType as ProgramInputType,
-)
+from .base_models import CalcType, Files, QCDataBaseModel
+from .inputs import ProgramInput
 from .structure import Structure
 from .utils import deprecated_class, to_multi_xyz
 
+if TYPE_CHECKING:
+    from .outputs import ProgramOutput
+
 __all__ = [
-    "SinglePointData",
     "Wavefunction",
+    "SinglePointData",
     "OptimizationData",
-    "Results",
+    "ConformerSearchData",
     "StructuredData",
     "StructuredDataType",
-    "DataType",
     "Data",
-    "ConformerSearchData",
+    "DataType",
     "SinglePointResults",
     "OptimizationResults",
     "ConformerSearchResults",
-    "Results",
-    "ProgramOutput",
 ]
 
 
-class Wavefunction(QCIOBaseModel):
+class Wavefunction(QCDataBaseModel):
     """The wavefunction for a single point calculation.
 
     Attributes:
@@ -88,7 +72,6 @@ class CalcInfoData(BaseModel):
         calcinfo_nmo: The number of molecular orbitals in the calculation.
     """
 
-    # calcinfo contains general information about the calculation
     calcinfo_natoms: int | None = None
     calcinfo_nalpha: int | None = None
     calcinfo_nbeta: int | None = None
@@ -120,21 +103,17 @@ class SinglePointData(Files, CalcInfoData):
 
     """
 
-    # Core properties
     energy: float | None = None
-    gradient: SerializableNDArray | None = None  # Coerced to 2D array
-    hessian: SerializableNDArray | None = None  # Coerced to 2D array
+    gradient: SerializableNDArray | None = None
+    hessian: SerializableNDArray | None = None
     nuclear_repulsion_energy: float | None = None
 
-    # Wavefunction data
     wavefunction: Wavefunction | None = None
 
-    # Frequency data
     freqs_wavenumber: list[float] = []
-    normal_modes_cartesian: SerializableNDArray | None = None  # Coerced to 3D array
+    normal_modes_cartesian: SerializableNDArray | None = None
     gibbs_free_energy: float | None = None
 
-    # SCF results
     scf_dipole_moment: list[float] | None = None
 
     @field_validator("normal_modes_cartesian")
@@ -143,9 +122,7 @@ class SinglePointData(Files, CalcInfoData):
         cls, v: SerializableNDArray, info: ValidationInfo
     ):
         if v is not None:
-            # Array must have length of the number of normal modes
             freqs = info.data.get("freqs_wavenumber")
-            # Fallback to len(v) if we must
             n_normal_modes = len(freqs) if freqs else len(v)
             return np.asarray(v).reshape(n_normal_modes, -1, 3)
         return v
@@ -153,14 +130,14 @@ class SinglePointData(Files, CalcInfoData):
     @field_validator("gradient")
     @classmethod
     def _validate_gradient_shape(cls, v: SerializableNDArray):
-        """Validate gradient is n x 3"""
+        """Validate gradient is n x 3."""
         if v is not None:
             return np.asarray(v).reshape(-1, 3)
 
     @field_validator("hessian")
     @classmethod
     def _validate_hessian_shape(cls, v: SerializableNDArray):
-        """Validate hessian is square"""
+        """Validate hessian is square."""
         if v is not None:
             v = np.asarray(v)
             n = int(np.sqrt(v.size))
@@ -175,11 +152,7 @@ class SinglePointData(Files, CalcInfoData):
         """Ensure that at least one result is present."""
         if all(
             result is None
-            for result in [
-                self.energy,
-                self.gradient,
-                self.hessian,
-            ]
+            for result in [self.energy, self.gradient, self.hessian]
         ):
             raise ValueError(
                 "SinglePointResults requires either an energy, gradient, or hessian "
@@ -195,11 +168,11 @@ class OptimizationData(Files, CalcInfoData):
         energies: The energies for each step of the optimization.
         structures: The Structure objects for each step of the optimization.
         final_structure: The final, optimized Structure.
-        trajectory: The Results objects for each step of the optimization.
+        trajectory: The ProgramOutput objects for each step of the optimization.
     """
 
     trajectory: list[
-        (Results[ProgramInput, SinglePointData] | Results[ProgramInput, Files])
+        "ProgramOutput[ProgramInput, SinglePointData] | ProgramOutput[ProgramInput, Files]"
     ] = []
 
     @property
@@ -218,7 +191,7 @@ class OptimizationData(Files, CalcInfoData):
         return self.final_structure
 
     @property
-    def final_energy(self) -> float | None:  # Optional for np.nan
+    def final_energy(self) -> float | None:
         """
         The final energy in the optimization. Is `np.nan` if final calculation failed.
         """
@@ -229,8 +202,6 @@ class OptimizationData(Files, CalcInfoData):
         """The energies for each step of the optimization."""
         return np.array(
             [
-                # ensure_structured_results_on_success validator ensures .results
-                # is not Files if success is True so # type: ignore
                 output.data.energy if output.success else np.nan  # type: ignore
                 for output in self.trajectory
             ],
@@ -243,7 +214,6 @@ class OptimizationData(Files, CalcInfoData):
         return [output.input_data.structure for output in self.trajectory]
 
     def return_result(self, calctype: CalcType) -> Structure | None:
-        """Return the primary result of the calculation."""
         return self.final_structure
 
     def __repr_args__(self):
@@ -308,7 +278,7 @@ class ConformerSearchData(Files):
     rotamer_energies: SerializableNDArray = np.array([])
 
     @model_validator(mode="after")
-    def _energies_size(self) -> ConformerSearchData:
+    def _energies_size(self) -> Self:
         """Ensure the energies are the same size as the conformers and rotamers."""
         if self.conformer_energies.size > 0 and (
             self.conformer_energies.size != len(self.conformers)
@@ -325,16 +295,13 @@ class ConformerSearchData(Files):
         return self
 
     @model_validator(mode="after")
-    def _sort_by_energy(self) -> ConformerSearchData:
+    def _sort_by_energy(self) -> Self:
         """Sort conformers and rotamers by energy."""
-
-        # Sort conformers and their energies together
         if self.conformer_energies.size > 0:
             sorted_indices = np.argsort(self.conformer_energies)
             self.conformers[:] = [self.conformers[i] for i in sorted_indices]
             self.conformer_energies[:] = self.conformer_energies[sorted_indices]
 
-        # Sort rotamers and their energies together
         if self.rotamer_energies.size > 0:
             sorted_indices = np.argsort(self.rotamer_energies)
             self.rotamers[:] = [self.rotamers[i] for i in sorted_indices]
@@ -362,10 +329,10 @@ class ConformerSearchData(Files):
         **rmsd_kwargs,
     ) -> tuple[list[Structure], SerializableNDArray]:
         """
-        !!! warning "Moved since *qcio* 0.15.0"
+        !!! warning "Moved since *qcdata* 0.15.0"
             This convenience method has moved to
             [`qcinf.filter_conformers`][qcinf.filter_conformers]
-            and this stub will be **removed** from *qcio* in a future release.
+            and this stub will be **removed** from *qcdata* in a future release.
 
             ```python
             from qcinf import filter_conformers
@@ -378,7 +345,6 @@ class ConformerSearchData(Files):
             )
             ```
         """
-
         warnings.warn(
             "`ConformerSearchResults.conformers_filtered()` is deprecated. "
             "Install *qcinf* and use `qcinf.filter_conformers` instead.",
@@ -403,209 +369,10 @@ Data = Union[Files, StructuredData]
 DataType = TypeVar("DataType", bound=Data)
 
 
-class Results(QCIOBaseModel, Generic[ProgramInputType, DataType]):
-    """The core results object from a quantum chemistry calculation.
-
-    Attributes:
-        input_data: The input data for the calculation. Any of `qcio.Inputs`.
-        success: Whether the calculation was successful.
-        data: The data from the calculation. Contains parsed values and files.
-            Any of `qcio.Data`.
-        logs: The logs from the calculation.
-        traceback: The traceback from the calculation, if it failed.
-        provenance: The provenance information for the calculation.
-        extras Dict[str, Any]: Additional information to bundle with the results. Use for
-            schema development and scratch space.
-        plogs str: `@property` Print the logs.
-        ptraceback str: `@property` Print the traceback.
-    """
-
-    input_data: ProgramInputType
-    success: Literal[True, False]
-    data: DataType
-    logs: str | None = None
-    traceback: str | None = None
-    provenance: Provenance
-
-    @model_validator(mode="before")
-    def _backwards_compatibility(cls, payload: dict[str, Any]) -> dict[str, Any]:
-        """Backwards compatibility for renamed attributes."""
-
-        # Backwards compatibility for .stdout attribute:
-        if "stdout" in payload:
-            warnings.warn(
-                "The 'stdout' attribute has been renamed to 'logs'. Please update your "
-                "code accordingly.",
-                category=FutureWarning,
-                stacklevel=2,
-            )
-            if "logs" not in payload:
-                payload["logs"] = payload.pop("stdout")
-
-        # Backwards compatibility for .results attribute:
-        if "results" in payload:
-            warnings.warn(
-                "The 'results' attribute has been renamed to 'data'. Please update "
-                "your code accordingly.",
-                category=FutureWarning,
-                stacklevel=2,
-            )
-            if isinstance(payload["results"], dict):
-                payload["data"] = payload.pop("results")
-
-        # Backwards compatibility for .files attribute:
-        if "files" in payload:
-            warnings.warn(
-                "The 'files' attribute has been moved to 'data.files'. Please "
-                "update your code accordingly.",
-                category=FutureWarning,
-                stacklevel=2,
-            )
-            # This moves files from the top level to the data attribute
-            if isinstance(payload["data"], dict):
-                data_files_dict = payload["data"].get("files", {})
-            else:  # data["data"] is Files, SinglePointData, OptimizationData
-                data_files_dict = payload["data"].files
-
-            data_files_dict.update(**payload.pop("files"))
-
-        return payload
-
-    def model_post_init(self, __context) -> None:
-        """Parameterize the class (if not set explicitly)."""
-        # Check if the current class is still generic, do not override if explicitly set
-        if self.__class__ is Results:
-            input_type = type(self.input_data)
-            results_type = type(self.data)
-            self.__class__ = Results[input_type, results_type]  # type: ignore # noqa 501
-
-    @property
-    def results(self) -> DataType:
-        """Return the data attribute."""
-        warnings.warn(
-            ".results has been renamed to .data. Please update your code accordingly.",
-            category=FutureWarning,
-            stacklevel=2,
-        )
-        return self.data
-
-    @property
-    def stdout(self) -> str | None:
-        """Backwards compatibility for .stdout attribute."""
-        warnings.warn(
-            ".stdout has been renamed to .logs. Please update your code accordingly.",
-            category=FutureWarning,
-            stacklevel=2,
-        )
-        return self.logs
-
-    @model_validator(mode="after")
-    def ensure_traceback_on_failure(self) -> Self:
-        if self.success is False:
-            assert self.traceback is not None, (
-                "A traceback must be provided for failed calculations."
-            )
-        return self
-
-    @model_validator(mode="after")
-    def _ensure_structured_results_on_success(self) -> Self:
-        """Ensure structured results are provided for successful, non FileInputs."""
-        # Covers case of ProgramInput and DualProgramInput
-        if self.success is True and isinstance(self.input_data, ProgramInput):
-            assert type(self.data) is not Files, (
-                "Structured results must be provided for successful, non FileInput "
-                "calculations."
-            )
-
-        return self
-
-    @model_validator(mode="after")
-    def ensure_primary_result_on_success(self) -> Self:
-        if type(self.data) is SinglePointData:
-            # Ensure the primary calctype result is present
-            calctype_val = self.input_data.calctype.value  # type: ignore
-            assert getattr(self.data, calctype_val) is not None, (
-                f"Missing the primary result: {calctype_val}."
-            )
-
-        return self
-
-    @property
-    def plogs(self) -> None:
-        """Print the logs"""
-        print(self.logs)
-
-    @property
-    def pstdout(self) -> None:
-        """Print the logs"""
-        warnings.warn(
-            ".pstdout has been renamed to .plogs. Please update your code accordingly.",
-            category=FutureWarning,
-            stacklevel=2,
-        )
-        print(self.logs)
-
-    @property
-    def ptraceback(self) -> None:
-        """Print the traceback"""
-        print(self.traceback)
-
-    def __repr_args__(self) -> list[tuple[str, Any]]:
-        """Exclude stdout and traceback from the repr and ensure success is first"""
-        args = super().__repr_args__()
-
-        # Replace stdout and traceback with "<...>"
-        filtered_args = [
-            (key, value if key not in {"stdout", "traceback"} else "<...>")
-            for key, value in args
-        ]
-        # Ensure success is first
-        success_arg = [(key, value) for key, value in filtered_args if key == "success"]
-        other_args = [(key, value) for key, value in filtered_args if key != "success"]
-        return success_arg + other_args
-
-    @property
-    def files(self) -> dict[str, str | bytes]:
-        """Return the files attribute."""
-        # Depreciation warning
-        warnings.warn(
-            ".files has been moved to .data.files. "
-            "Please access it there going forward.",
-            category=FutureWarning,
-            stacklevel=2,
-        )
-        return self.data.files
-
-    @property
-    def return_result(self) -> float | SerializableNDArray | Structure | None:
-        """Return the primary result of the calculation."""
-        warnings.warn(
-            ".return_result is being deprecated and will be removed in a future. "
-            "Please access data directly at .data instead.",
-            category=FutureWarning,
-            stacklevel=2,
-        )
-        # For mypy
-        assert self.data is not None, "No data exist on this Results object."
-        assert type(self.input_data) is not FileInput, "FileInputs have no data."
-        return self.data.return_result(self.input_data.calctype)  # type: ignore
-
-
-### Backwards compatibility classes ###
-@deprecated_class("Results")
-class ProgramOutput(Results):
-    """This class is deprecated and will be removed in a future release. Please use
-    `Results` instead."""
-
-    pass
-
-
 @deprecated_class("SinglePointData")
 class SinglePointResults(SinglePointData):
     """This class is deprecated and will be removed in a future release. Please use
     `SinglePointData` instead."""
-
-    pass
 
 
 @deprecated_class("OptimizationData")
@@ -613,33 +380,8 @@ class OptimizationResults(OptimizationData):
     """This class is deprecated and will be removed in a future release. Please use
     `OptimizationData` instead."""
 
-    pass
-
 
 @deprecated_class("ConformerSearchData")
 class ConformerSearchResults(ConformerSearchData):
     """This class is deprecated and will be removed in a future release. Please use
     `ConformerSearchData` instead."""
-
-    pass
-
-
-### End backwards compatibility classes ###
-
-
-# Register the concrete classes for serialization
-def _register_program_output_classes():
-    """Required so that pickle can find the concrete classes for serialization."""
-    for spec_type, data_type in product(get_args(Inputs), get_args(Data)):
-        # TODO: Remove ProgramOutput when compatibility is no longer needed
-        for ClassType in [Results, ProgramOutput]:
-            _class = ClassType[spec_type, data_type]
-            name = _class.__name__
-            this_module = sys.modules[__name__]
-            if name not in this_module.__dict__:
-                # Directly declare the type to ensure it is registered
-                setattr(this_module, name, _class)
-
-
-# Call this function during module initialization
-_register_program_output_classes()

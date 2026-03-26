@@ -1,5 +1,5 @@
 24
-qcio_charge=-1 qcio_multiplicity=2 qcio__identifiers_name=caffeine IUPAC 1,3,7-trimethylpurine-2,6-dione
+qcdata_charge=-1 qcdata_multiplicity=2 qcdata__identifiers_name=caffeine IUPAC 1,3,7-trimethylpurine-2,6-dione
 O                     0.470000000548     2.568799999431     0.000600002289
 O                    -3.127100001630    -0.443600000395    -0.000300001144
 N                    -0.968600002583    -1.312500000178     0.000000000000

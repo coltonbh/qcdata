@@ -2804,7 +2804,7 @@ source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pydantic" },
     { name = "qcconst" },
-    { name = "qcio" },
+    { name = "qcdata" },
     { name = "typing-extensions" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/1e/91/22962d2356bec6a8ea09dd8ee919fb538a51e60f6c07f7d39f42c9339965/qcinf-0.2.1.tar.gz", hash = "sha256:2d50219bd9813b7da6931994aeb7e2f1d189f325556b2f41e024f65211701c66", size = 76791 }
@@ -2819,7 +2819,7 @@ all = [
 ]
 
 [[package]]
-name = "qcio"
+name = "qcdata"
 version = "0.16.2"
 source = { editable = "." }
 dependencies = [

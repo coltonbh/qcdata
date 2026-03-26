@@ -1,4 +1,4 @@
-::: qcio.view
+::: qcdata.view
     options:
         members: 
             - view

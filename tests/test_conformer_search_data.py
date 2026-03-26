@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 from pydantic import ValidationError
 
-from qcio import ConformerSearchData
+from qcdata import ConformerSearchData
 
 
 def test_energies_size(water):
