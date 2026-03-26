@@ -1,4 +1,4 @@
-site_name: Quantum Chemistry Data (QCDATA)
+site_name: Quantum Chemistry Data (qcdata)
 site_url: https://qcdata.coltonhicks.com/
 theme:
   name: material
@@ -104,7 +104,9 @@ nav:
       - Overview: api/overview.md
       - Structure: api/structure.md
       - Inputs: api/inputs.md
-      - Results: api/results.md
+      - Outputs: api/outputs.md
+      - Data: api/data.md
+      - Deprecated Results Alias: api/results.md
       - Utilities: api/utils.md
       - Visualizations:
           - View: api/view.md

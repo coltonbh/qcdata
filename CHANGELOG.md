@@ -8,6 +8,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 
+- Renamed the package from `qcio` to `qcdata` across source, metadata, documentation, workflows, tests, and serialized XYZ comment prefixes.
+- Restored `ProgramOutput` as the primary output model and made `Results` a deprecated compatibility alias.
+- Split structured output payload models into a dedicated `data.py` module and separated the API/docs around `inputs`, `outputs`, and `data`.
+- Reorganized tests to mirror the package structure by splitting output-container tests from data-model tests.
+- Added a temporary `qcio` compatibility shim so dependencies that still import `qcio` continue to work while emitting a deprecation warning.
+
+### Changed
+
 - `Structure.connectivity` validator now automatically coerces bonds to be listed in ascending order and sorted, e.g., if passed `[(2, 0, 1.0), (1, 2, 2.0)]` as the original connectivity it will be coerced to `[(0, 2, 1.0), (1, 2, 2.0)]`. This makes the output deterministic and the comparison between different methods of determining connectivity more straightforward.
 - `Structure.adjacency_dict` now returns a regular `dict` instead of a `collections.defaultdict`, avoiding the automatic creation of keys when accessing non-existent neighbors while preserving the same adjacency information.
 
@@ -36,7 +44,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - 🚨Python 3.9 support. Minimum supported version is now 3.10. [#91](https://github.com/coltonbh/qcdata/pull/91)
 - All constants and periodic table data moved to [qcconst](https://github.com/coltonbh/qcconst).
-- All cheminformatics methods, including those that used `rdkit` and `openbabel` such as `rmsd` and `align`. Placed these algorithms into [qcinf](https://github.com/coltonbh/qcinf) so that `qcdata` can remain purely about data structures. All future algorithms will go into `qcinf`.
+- All cheminformatics methods, including those that used `rdkit` and `openbabel` such as `rmsd` and `align`. Placed these algorithms into [qcinf](https://github.com/coltonbh/qcinf) so that `qcio` can remain purely about data structures. All future algorithms will go into `qcinf`.
 
   - `Structure.from_smiles()` method in favor of functional API using the `qcinf` `smiles_to_structure` function.
 
@@ -75,7 +83,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Renamed `OptimizationResults` -> `OptimizationData`. [#90](https://github.com/coltonbh/qcdata/pull/90)
 - Renamed `ConformerSearchResults` -> `ConformerSearchData`. [#90](https://github.com/coltonbh/qcdata/pull/90)
 - Added compatibility classes so old imports looking for these names still work but emit a `FutureWarning`. [#90](https://github.com/coltonbh/qcdata/pull/90)
-- Renamed `QCDataModelBase` -> `QCDataBaseModel` to match `pydantic` semantics for `BaseModel`. [#90](https://github.com/coltonbh/qcdata/pull/90)
+- Renamed `QCIOModelBase` -> `QCIOBaseModel` to match `pydantic` semantics for `BaseModel`. [#90](https://github.com/coltonbh/qcdata/pull/90)
 - Renamed `ProgramInput` -> `CalcSpec` and added a compatibility shim. [#90](https://github.com/coltonbh/qcdata/pull/90)
 - Renamed `ProgramArgs` -> `CoreSpec` and added a compatibility shim. [#90](https://github.com/coltonbh/qcdata/pull/90)
 - Renamed `ProgramArgsSub` -> `SubCalcSpec` and added a compatibility shim. [#90](https://github.com/coltonbh/qcdata/pull/90)
@@ -141,13 +149,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
-- `qcdata.models.utils.to_multi_xyz()` function that accepts an array of structures and converts them to a multi-xyz string.
+- `qcio.models.utils.to_multi_xyz()` function that accepts an array of structures and converts them to a multi-xyz string.
 
 ## [0.12.2] - 2025-01-29
 
 ### Changed
 
-- Updated `numpy` dependency to support both `numpy` `v1` or `v2`. `qcdata` does not rely upon any updated `numpy 2` API so no changes were made to the code.
+- Updated `numpy` dependency to support both `numpy` `v1` or `v2`. `qcio` does not rely upon any updated `numpy 2` API so no changes were made to the code.
 
 ## [0.12.1] - 2025-01-15
 
@@ -241,8 +249,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - `CNAME` file to `/docs` directory.
 - `data_source` and `data_url` to `periodic_table` docstring.
-- `Structure.from_xyz` and `Structure.to_xyz` now support pulling additional (non `qcdata_`) comments into `Structure.extras['xyz_comments']` and serializing these comments back into the `xyz` string.
-- `Structure.from_xyz` and `Structure.to_xyz` support pulling in and serializing `qcdata__identifiers_*` in the `xyz` comments line.
+- `Structure.from_xyz` and `Structure.to_xyz` now support pulling additional (non `qcio_`) comments into `Structure.extras['xyz_comments']` and serializing these comments back into the `xyz` string.
+- `Structure.from_xyz` and `Structure.to_xyz` support pulling in and serializing `qcio__identifiers_*` in the `xyz` comments line.
 - `Structure.from_xyz_multi(xyz_str: str) -> List[Structure]` to return a list of `Structure` objects from a multi-structure xyz file.
 - `Structure.open` now supports multi-structure xyz files and will return a list of Structure objects.
 - New `CalcType.conformer_search` and `ConformerSearchResults` for conformer search calculations.
@@ -251,7 +259,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
-- Documentation website available at <https://qcdata.coltonhicks.com/>.
+- Documentation website available at <https://qcio.coltonhicks.com/>.
 
 ### Removed
 
@@ -267,8 +275,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
-- Install all extra features with `pip install qcdata[all]`.
-- Better error messaging if `qcdata.view` is imported but `view` dependencies are not installed.
+- Install all extra features with `pip install qcio[all]`.
+- Better error messaging if `qcio.view` is imported but `view` dependencies are not installed.
 - `PeriodicTable.number(number: int) -> Atom` to lookup atoms by atomic number.
 - Multi-structure SMILES support for `Structure.from_smiles` using `Open Babel`.
   ```python
@@ -305,7 +313,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Periodic Table with simple interface.
 
   ```python
-  from qcdata.constants import periodic_table as pt
+  from qcio.constants import periodic_table as pt
 
   pt.He.symbol
   pt.He.number
@@ -338,16 +346,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
-- ✨`view`✨ module that enables simple viewing of `Structures` and `ProgramOutput` objects for easy visual analysis and comparison in Jupyter Notebooks. Use with `from qcdata import view` and then `view.view(prog_output1, prog_output2, ...)` inside a Jupyter Notebook. See `README.md` for more details.
+- ✨`view`✨ module that enables simple viewing of `Structures` and `ProgramOutput` objects for easy visual analysis and comparison in Jupyter Notebooks. Use with `from qcio import view` and then `view.view(prog_output1, prog_output2, ...)` inside a Jupyter Notebook. See `README.md` for more details.
 
 ### Changed
 
 - Refactored `ProgramOutput.files` into the `.results` attribute:
-  - `ProgramOutput` now inherits from `QCDataModelBase`.
+  - `ProgramOutput` now inherits from `QCIOModelBase`.
   - `SinglePointResults` and `OptimizationResults` inherit from `Files`.
     - This means `SinglePointResults` and `OptimizationResults` both return `True` for `isinstance(obj, Files)`.
   - `Files` has been added to `Results` (a valid `ResultsType`).
-  - 🚨 BREAKING CHANGE: Removed awkward `NoResults` object from `qcdata`. Realizing that `Files` is the correct base case for `.results` (files may exist for all failed or successful calculations) enabled this change.
+  - 🚨 BREAKING CHANGE: Removed awkward `NoResults` object from `qcio`. Realizing that `Files` is the correct base case for `.results` (files may exist for all failed or successful calculations) enabled this change.
   - `ProgramOutput.results: ResultsType` now has no default value.
   - This is more logically consistent with the idea that all program results--including files--are found at `.results`. Structured results objects like `SinglePointResults` and `OptimizationResults` essentially parse out data from these files into structured data. `FileInput` calculations behave just like structured calculations now with their outputs (the files produced by the program) available in `.results`. This matches the metal model for input objects that start with `FileInput` and then layer structure onto common values like `.model`, `keywords`, and `calctype`.
     - This means that `FileInput` calculations now produce a `ProgramOutput[FileInput, Files]` object instead of the former `ProgramOutput[FileInput, NoResults]` object. This same change holds for failed single point calculations or failed optimization calculations with no computed results.
@@ -363,7 +371,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 
 - `OptimizationResults.trajectory` may contain a series of successful `ProgramOutput[..., SinglePointResults]` objects and then a failed `ProgramOutput[..., NoResults]` object. In this case we set the `.energies` property of the last value to `nan` for the failed calculation rather than `0.0`.
-- Updated `QCDataModelBase.__repr_args__` so that `.success` is always shown in the repr, even if `False`.
+- Updated `QCIOModelBase.__repr_args__` so that `.success` is always shown in the repr, even if `False`.
 - Updated `ProgramOutput.__repr_args__` to always show `.success` first. This helps with `ProgramOutput[..., OptimizationsResults]` where it isn't immediately obvious the calculation has failed from the printed string because `.results` isn't `NoResults`.
 
 ## [0.10.4] - 2024-07-15
@@ -440,7 +448,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
-- `Molecule.atomic_numbers` property which uses `qcdata.constants.ELEMENTS` to map atomic symbols to atomic numbers.
+- `Molecule.atomic_numbers` property which uses `qcio.constants.ELEMENTS` to map atomic symbols to atomic numbers.
 - Generic `ProgramOutput[InputType, ResultsType]` class to handle all program outputs.
 
 ### Removed
@@ -468,12 +476,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
-- `py.typed` file to enable type checking in other projects that use `qcdata`.
+- `py.typed` file to enable type checking in other projects that use `qcio`.
 
 ### Changed
 
 - Updated `black`.
-- Added `fix_com=True` and `fix_orientation=True` to default conversion from `qcdata.Molecule` to `qcelemental.Molecule` objects so that qcel doesn't translate or rotate the molecule unsuspectingly without the user's consent. See default behaviors [here](https://github.com/MolSSI/QCElemental/blob/8e5a8cff52a6438ff9d6c1c6bbf1aeb4f02f12e1/qcelemental/models/molecule.py#L262-L281).
+- Added `fix_com=True` and `fix_orientation=True` to default conversion from `qcio.Molecule` to `qcelemental.Molecule` objects so that qcel doesn't translate or rotate the molecule unsuspectingly without the user's consent. See default behaviors [here](https://github.com/MolSSI/QCElemental/blob/8e5a8cff52a6438ff9d6c1c6bbf1aeb4f02f12e1/qcelemental/models/molecule.py#L262-L281).
 - Renamed `SubProgramArgs` to `SubProgramInput` to be more consistent with the naming convention of the other input objects.
 
 ## [0.8.0] - 2024-01-12
@@ -495,7 +503,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 
 - `Molecule._to_xyz()` is now a public method `Molecule.to_xyz()` that returns an xyz string rather than writing an xyz file to disk.
-- Hoisted `utils.json_dumps` to `qcdata.json_dumps` for easier import.
+- Hoisted `utils.json_dumps` to `qcio.json_dumps` for easier import.
 
 ## [0.7.0] - 2023-09-19
 
@@ -524,14 +532,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
-- `qcdata.utils.json_dumps` for serializing `pydantic` objects or lists of objects. Helpful for serializing requests to send of HTTP.
+- `qcio.utils.json_dumps` for serializing `pydantic` objects or lists of objects. Helpful for serializing requests to send of HTTP.
 - `typos` pre-commit check.
 - `@classmethod` decorator to `@field_validator` functions as per [pydantic docs](https://docs.pydantic.dev/latest/usage/validators/#field-validators).
 - `SinglePointResults.scf_dipole_moment`.
 
 ### Fixed
 
-- Removed invalid objects in `qcdata.__init__.py.__all__`.
+- Removed invalid objects in `qcio.__init__.py.__all__`.
 
 ### Changed
 

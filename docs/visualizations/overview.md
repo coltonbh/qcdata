@@ -13,4 +13,4 @@ python -m pip install qcdata[all]
 
 ```
 
-Then in a Jupyter Notebook import the `view` module and call `view.view(...)` on any `Structure` or `Results` object to instantly visualize your results. Click on the examples on the left to see this in action ✨!
+Then in a Jupyter Notebook import the `view` module and call `view.view(...)` on any `Structure` or `ProgramOutput` object to instantly visualize your results. Click on the examples on the left to see this in action ✨!

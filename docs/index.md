@@ -1,4 +1,4 @@
-# Quantum Chemistry I/O
+# Quantum Chemistry Data
 
 [![image](https://img.shields.io/pypi/v/qcdata.svg)](https://pypi.python.org/pypi/qcdata)
 [![image](https://img.shields.io/pypi/l/qcdata.svg)](https://pypi.python.org/pypi/qcdata)
@@ -55,11 +55,11 @@ or if your shell requires `''` around arguments with brackets:
 python -m pip install 'qcdata[view]'
 ```
 
-Then in a Jupyter notebook import the `qcdata` view module and call `view.view(...)` passing it one or any number of `qcdata` objects you want to visualizing including `Structure` objects or any `Results` object. You may also pass an array of `titles` and/or `subtitles` to add additional information to the molecular structure display. If no titles are passed `qcdata` with look for `Structure` identifiers such as a name or SMILES to label the `Structure`.
+Then in a Jupyter notebook import the `qcdata` view module and call `view.view(...)` passing it one or any number of `qcdata` objects you want to visualize, including `Structure` objects or any `ProgramOutput` object. You may also pass an array of `titles` and/or `subtitles` to add additional information to the molecular structure display. If no titles are passed `qcdata` will look for `Structure` identifiers such as a name or SMILES to label the `Structure`.
 
 ![Structure Viewer](https://public.coltonhicks.com/assets/qcdata/structure_viewer.png)
 
-Seamless visualizations for `Results` objects make results analysis easy!
+Seamless visualizations for `ProgramOutput` objects make results analysis easy!
 
 ![Optimization Viewer](./assets/optimization_viewer.png)
 

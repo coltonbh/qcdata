@@ -8,7 +8,7 @@ Design Decisions:
         want to use this HTML to create a custom view, they can do so. If they want to
         display the HTML in a Jupyter Notebook, they can call display(HTML(html_string))
         after importing `from IPython.display import HTML, display`.
-    - The basic layout for viewing results (all Results objects) is a table of
+    - The basic layout for viewing outputs (all ProgramOutput objects) is a table of
         basic parameters followed by a structure viewer and results table or plot.
         DualProgramInputs add details for the subprogram.
         ----------------------------------------------------------------------------
@@ -39,7 +39,7 @@ from qcdata import (
     LengthUnit,
     OptimizationData,
     ProgramInput,
-    Results,
+    ProgramOutput,
     SinglePointData,
     Structure,
 )
@@ -331,15 +331,15 @@ def generate_files_string(files: dict[str, str | bytes]) -> str:
     return generate_dictionary_string(viewer_dict)
 
 
-def generate_output_table(*results: Results) -> str:
+def generate_output_table(*results: ProgramOutput) -> str:
     """
-    Generate an HTML table displaying the basic parameters for Results objects.
+    Generate an HTML table displaying the basic parameters for ProgramOutput objects.
 
     Args:
-        *results: The Results objects to display.
+        *results: The ProgramOutput objects to display.
 
     Returns:
-        str: A string of HTML displaying the Results objects in a table.
+        str: A string of HTML displaying the ProgramOutput objects in a table.
     """
     styles = """
     <style>
@@ -441,13 +441,13 @@ def generate_output_table(*results: Results) -> str:
 
 
 def generate_optimization_plot(
-    prog_output: Results, figsize=(6.4, 4.8), grid=True
+    prog_output: ProgramOutput, figsize=(6.4, 4.8), grid=True
 ) -> str:
     """
-    Generate a plot of the energy optimization by cycle for a single Results.
+    Generate a plot of the energy optimization by cycle for a single ProgramOutput.
 
     Args:
-        prog_output: The Results to generate the plot for.
+        prog_output: The ProgramOutput to generate the plot for.
         figsize: The size of the figure in inches.
         grid: Whether to display grid lines on the plot.
 
@@ -610,7 +610,7 @@ def structures(
 
 
 def program_outputs(
-    *results: Results[ProgramInput | DualProgramInput, Data],
+    *results: ProgramOutput[ProgramInput | DualProgramInput, Data],
     animate: bool = True,
     struct_viewer: bool = True,
     conformer_rmsd_threshold: float | None = None,
@@ -619,10 +619,10 @@ def program_outputs(
     **kwargs,
 ) -> None:
     """
-    Display one or many Results objects.
+    Display one or many ProgramOutput objects.
 
     Args:
-        *results: The Results objects to display.
+        *results: The ProgramOutput objects to display.
         animate: Whether to animate the structure if it is an optimization.
         struct_viewer: Whether to display the structure viewer.
         conformer_rmsd_threshold: The threshold for RMSD to determine if conformers are
@@ -632,7 +632,7 @@ def program_outputs(
         **kwargs: Additional keyword arguments to pass to the viewer functions.
 
     Returns:
-        None. Displays the Results objects in the Jupyter Notebook.
+        None. Displays the ProgramOutput objects in the Jupyter Notebook.
     """
 
     width = kwargs.get("width", DEFAULT_WIDTH)
@@ -740,7 +740,7 @@ def program_outputs(
 
 
 def view(
-    *objs: Results | Structure | list[Structure],
+    *objs: ProgramOutput | Structure | list[Structure],
     **kwargs,
 ) -> None:
     """
@@ -748,7 +748,7 @@ def view(
     need to use to view any qcdata object.
 
     Args:
-        *objs: The Results or Structure objects to view. May pass one or more
+        *objs: The ProgramOutput or Structure objects to view. May pass one or more
             objects or one or more lists of Structure objects.
         **kwargs: Additional keyword arguments to pass to the viewer functions.
 
@@ -766,7 +766,7 @@ def view(
         if isinstance(obj, Structure) or isinstance(obj, list):
             structures(*objs, **kwargs)  # type: ignore
 
-        elif isinstance(obj, Results):
+        elif isinstance(obj, ProgramOutput):
             program_outputs(obj, **kwargs)
 
         else:

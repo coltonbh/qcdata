@@ -1,4 +1,4 @@
-# Quantum Chemistry I/O
+# Quantum Chemistry Data
 
 [![image](https://img.shields.io/pypi/v/qcdata.svg)](https://pypi.python.org/pypi/qcdata)
 [![image](https://img.shields.io/pypi/l/qcdata.svg)](https://pypi.python.org/pypi/qcdata)
@@ -28,7 +28,7 @@ python -m pip install qcdata
 
 ## Quickstart
 
-`qcdata` is built around a simple mental model: `Input` objects define quantum chemistry calculations, and a `Results` object defines the results.
+`qcdata` is built around a simple mental model: `Input` objects define quantum chemistry calculations, a `ProgramOutput` object captures each execution, and `Data` objects hold the structured output values.
 
 All `qcdata` objects can be serialized and saved to disk by calling `.save("filename.json")` and loaded from disk by calling `.open("filename.json")`. `qcdata` supports `json`, `yaml`, and `toml` file formats. Binary data will be automatically base64 encoded and decoded when saving and loading.
 
@@ -119,7 +119,7 @@ psi4_input.save_files("psi4")
 
 #### Modifying Input Objects
 
-Objects are immutable by default so if you want to modify an object cast it to a dictionary, make the desired modification, and then instantiate a new object. This prevents accidentally modifying objects that may already be referenced in other calculations--perhaps as `.input_data` on a `Results` object.
+Objects are immutable by default so if you want to modify an object cast it to a dictionary, make the desired modification, and then instantiate a new object. This prevents accidentally modifying objects that may already be referenced in other calculations, perhaps as `.input_data` on a `ProgramOutput` object.
 
 ```python
 # Cast to a dictionary and modify
@@ -129,9 +129,9 @@ new_input_dict["model"]["method"] = "b3lyp"
 new_prog_input = CalcInput(**new_input_dict)
 ```
 
-### Results
+### ProgramOutput
 
-Calculation values are stored in a `Results` object. `Results` may contain parsed data, files, logs, and additional details of the calculation. A `Results` object has the following attributes:
+Calculation values are stored in a `ProgramOutput` object. `ProgramOutput` contains parsed data, files, logs, and additional execution details. A `ProgramOutput` object has the following attributes:
 
 ```python
 output.input_data # Input data used for the calculation
@@ -144,13 +144,13 @@ output.provenance # Provenance information about the calculation
 output.extras # Any extra information not in the schema
 ```
 
-The `.data` attribute on a `Results` is polymorphic and may be either `Files`, `SinglePointData`, `OptimizationData`, `ConformerSearchData`, or any other `DataType` depending on the calculation requested. Available attributes for each data type can be found by calling `dir()` on the object.
+The `.data` attribute on a `ProgramOutput` is polymorphic and may be either `Files`, `SinglePointData`, `OptimizationData`, `ConformerSearchData`, or any other `DataType` depending on the calculation requested. Available attributes for each data type can be found by calling `dir()` on the object.
 
 ```python
 dir(results.data)
 ```
 
-Results can be saved to disk in json, yaml, or toml format by calling `.save("filename.{json/yaml/toml}")` and loaded from disk by calling `.open("filename.{json/yaml/toml}")`.
+Program outputs can be saved to disk in json, yaml, or toml format by calling `.save("filename.{json/yaml/toml}")` and loaded from disk by calling `.open("filename.{json/yaml/toml}")`.
 
 ## ✨ Visualization ✨
 
@@ -168,11 +168,11 @@ or if your shell requires `''` around arguments with brackets:
 python -m pip install 'qcdata[view]'
 ```
 
-Then in a Jupyter notebook import the `qcdata` view module and call `view.view(...)` passing it one or any number of `qcdata` objects you want to visualizing including `Structure` objects or any `Results` object. You may also pass an array of `titles` and/or `subtitles` to add additional information to the molecular structure display. If no titles are passed `qcdata` with look for `Structure` identifiers such as a name or SMILES to label the `Structure`.
+Then in a Jupyter notebook import the `qcdata` view module and call `view.view(...)` passing it one or any number of `qcdata` objects you want to visualize, including `Structure` objects or any `ProgramOutput` object. You may also pass an array of `titles` and/or `subtitles` to add additional information to the molecular structure display. If no titles are passed `qcdata` will look for `Structure` identifiers such as a name or SMILES to label the `Structure`.
 
 ![Structure Viewer](https://public.coltonhicks.com/assets/qcdata/structure_viewer.png)
 
-Seamless visualizations for `Results` objects make results analysis easy!
+Seamless visualizations for `ProgramOutput` objects make results analysis easy!
 
 ![Optimization Viewer](./docs/assets/optimization_viewer.png)
 

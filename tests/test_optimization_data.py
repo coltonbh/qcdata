@@ -1,15 +1,15 @@
 from qcdata import OptimizationData
 
 
-def test_optimization_result_properties(results):
+def test_optimization_result_properties(prog_output):
     opt_res = OptimizationData(
-        trajectory=[results],
+        trajectory=[prog_output],
     )
 
     # Test properties
-    assert opt_res.final_structure == results.input_data.structure
-    assert opt_res.energies == [results.data.energy]
-    assert opt_res.structures == [results.input_data.structure]
+    assert opt_res.final_structure == prog_output.input_data.structure
+    assert opt_res.energies == [prog_output.data.energy]
+    assert opt_res.structures == [prog_output.input_data.structure]
     # Test custom __repr_args__
     repr_args = opt_res.__repr_args__()
     assert isinstance(repr_args, list)
@@ -20,9 +20,9 @@ def test_optimization_result_properties(results):
         assert isinstance(arg[1], str)
 
 
-def test_optimization_save_to_xyz(results, tmp_path):
+def test_optimization_save_to_xyz(prog_output, tmp_path):
     opt_res = OptimizationData(
-        trajectory=[results] * 3,
+        trajectory=[prog_output] * 3,
     )
     opt_res.save(tmp_path / "opt_res.xyz")
 
@@ -47,9 +47,9 @@ H  0.75016279902412597 -0.33132205318865016 -0.54481406902570462
     assert text == correct_text
 
 
-def test_optimization_save_non_xyz(results, tmp_path):
+def test_optimization_save_non_xyz(prog_output, tmp_path):
     opt_res = OptimizationData(
-        trajectory=[results] * 3,
+        trajectory=[prog_output] * 3,
     )
     opt_res.save(tmp_path / "opt_res.json")
     opt_res_copy = OptimizationData.open(tmp_path / "opt_res.json")
