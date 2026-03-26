@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+## [0.17.0] - 2026-03-26
+
 ### Changed
 
 - Renamed the package from `qcio` to `qcdata` across source, metadata, documentation, workflows, tests, and serialized XYZ comment prefixes.
@@ -651,7 +653,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   - `SinglePointComputedProperties`
   - `Wavefunction`
 
-[unreleased]: https://github.com/coltonbh/qcdata/compare/0.16.2...HEAD
+[unreleased]: https://github.com/coltonbh/qcdata/compare/0.17.0...HEAD
+[0.17.0]: https://github.com/coltonbh/qcdata/releases/tag/0.17.0
 [0.16.2]: https://github.com/coltonbh/qcdata/releases/tag/0.16.2
 [0.16.1]: https://github.com/coltonbh/qcdata/releases/tag/0.16.1
 [0.16.0]: https://github.com/coltonbh/qcdata/releases/tag/0.16.0
