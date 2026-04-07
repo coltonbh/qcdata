@@ -19,7 +19,7 @@ from .inputs import InputType as ProgramInputType
 from .structure import Structure
 from .utils import deprecated_class
 
-__all__ = ["ProgramOutput", "Results"]
+__all__ = ["ProgramOutput"]
 
 
 class ProgramOutput(QCDataBaseModel, Generic[ProgramInputType, DataType]):
