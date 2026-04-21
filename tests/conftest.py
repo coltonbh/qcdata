@@ -144,3 +144,18 @@ def results_failure(prog_input_factory, sp_data):
 @pytest.fixture
 def opt_data(prog_output):
     return OptimizationData(trajectory=[prog_output])
+
+
+@pytest.fixture
+def opt_output(prog_input_factory, opt_data):
+    """Successful ProgramOutput object"""
+    input_data = prog_input_factory("optimization")
+
+    return ProgramOutput[ProgramInput, OptimizationData](
+        input_data=input_data,
+        success=True,
+        logs="program standard out...",
+        data=opt_data,
+        provenance={"program": "qcdata-test-suite", "scratch_dir": "/tmp/qcdata"},
+        extras={"some_extra": 1},
+    )

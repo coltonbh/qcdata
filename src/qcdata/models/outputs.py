@@ -13,7 +13,14 @@ from typing_extensions import Self
 from qcdata.helper_types import SerializableNDArray
 
 from .base_models import Files, Provenance, QCDataBaseModel
-from .data import ConformerSearchData, Data, DataType, OptimizationData, SinglePointData
+from .data import (
+    ConformerSearchData,
+    Data,
+    DataType,
+    OptimizationData,
+    ScanData,
+    SinglePointData,
+)
 from .inputs import FileInput, Inputs, ProgramInput
 from .inputs import InputType as ProgramInputType
 from .structure import Structure
@@ -205,6 +212,7 @@ ProgramOutput.model_rebuild()
 Results.model_rebuild()
 OptimizationData.model_rebuild()
 ConformerSearchData.model_rebuild()
+ScanData.model_rebuild()
 
 def _register_program_output_classes():
     """Required so that pickle can find the concrete classes for serialization."""

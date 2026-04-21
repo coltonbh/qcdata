@@ -25,6 +25,7 @@ __all__ = [
     "SinglePointData",
     "OptimizationData",
     "ConformerSearchData",
+    "ScanData",
     "StructuredData",
     "StructuredDataType",
     "Data",
@@ -150,10 +151,7 @@ class SinglePointData(Files, CalcInfoData):
     @model_validator(mode="after")
     def _ensure_results(self) -> Self:
         """Ensure that at least one result is present."""
-        if all(
-            result is None
-            for result in [self.energy, self.gradient, self.hessian]
-        ):
+        if all(result is None for result in [self.energy, self.gradient, self.hessian]):
             raise ValueError(
                 "SinglePointResults requires either an energy, gradient, or hessian "
                 "value."
@@ -363,11 +361,79 @@ class ConformerSearchData(Files):
         )
 
 
-StructuredData = Union[SinglePointData, OptimizationData, ConformerSearchData]
+class ScanData(Files, CalcInfoData):
+    """Computed data for a scan (may be for a relaxed or frozen).
+
+    Attributes
+    ----------
+        energies: The energies for each step of the scan.
+        structures: The Structure objects for each step of the scan.
+        trajectory: The ProgramOutput objects for each step of the scan.
+    """
+
+    trajectory: list[ProgramOutput[ProgramInput, OptimizationData]]
+
+    @property
+    def energies(self) -> np.ndarray:
+        """The energies for each step of the scan."""
+        return np.array(
+            [
+                output.data.final_energy if output.success else np.nan
+                for output in self.trajectory
+            ],
+            dtype=float,
+        )
+
+    @property
+    def structures(self) -> list[Structure]:
+        """The Structure objects for each step of the optimization."""
+        return [output.data.final_structure for output in self.trajectory]
+
+    def __repr_args__(self) -> list[tuple[str, str]]:
+        """Avoid printing the entire collection of objects in representation."""
+        return [
+            ("trajectory", "[...]"),
+            ("energies", "[...]"),
+            ("structures", "[...]"),
+        ]
+
+    def to_xyz(self) -> str:
+        """Return the trajectory as an `xyz` string."""
+        return to_multi_xyz(self.structures)
+
+    def save(
+        self,
+        filepath: Path | str,
+        exclude_none: bool = True,
+        exclude_unset: bool = True,
+        indent: int = 4,
+        **kwargs: dict[str, Any],
+    ) -> None:
+        """Save a ScanData to a file.
+
+        Args:
+            filepath: The path to save the molecule to.
+            exclude_none: If True, attributes with a value of None will not be written
+                to the file.
+            exclude_unset: If True, attributes that have not been set will not be
+                written to the file.
+            **kwargs: Additional keyword arguments to pass to the json serializer.
+
+        Note:
+            If the filepath has a `.xyz` extension, the trajectory will be saved to a
+            multi-structure `xyz` file.
+        """
+        filepath = Path(filepath)
+        if filepath.suffix == ".xyz":
+            filepath.write_text(self.to_xyz())
+            return
+        super().save(filepath, exclude_none, exclude_unset, indent, **kwargs)
+
+
+StructuredData = Union[SinglePointData, OptimizationData, ConformerSearchData, ScanData]
 StructuredDataType = TypeVar("StructuredDataType", bound=StructuredData)
 Data = Union[Files, StructuredData]
 DataType = TypeVar("DataType", bound=Data)
-
 
 @deprecated_class("SinglePointData")
 class SinglePointResults(SinglePointData):

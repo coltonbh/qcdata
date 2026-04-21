@@ -249,9 +249,7 @@ class Files(QCDataBaseModel):
             for filename, data in files.items()
         }
 
-    def add_file(
-        self, filepath: Path | str, relative_dir: Path | None = None
-    ) -> None:
+    def add_file(self, filepath: Path | str, relative_dir: Path | None = None) -> None:
         """Add a file to the object. The file will be added at to the `files` attribute
             with the filename as the key and the file data as the value.
 
@@ -381,6 +379,7 @@ class CalcType(str, Enum):
     optimization = "optimization"
     transition_state = "transition_state"
     conformer_search = "conformer_search"
+    scan = "scan"
 
     def __repr__(self) -> str:
         """Custom repr for CalcType"""
