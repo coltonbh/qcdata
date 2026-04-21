@@ -1,7 +1,5 @@
 from qcdata import ScanData
 
-ScanData.model_rebuild()
-
 
 def test_scan_data_properties(opt_output):
     """Test that the number of energies matches the number of conformers"""

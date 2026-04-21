@@ -430,11 +430,10 @@ class ScanData(Files, CalcInfoData):
         super().save(filepath, exclude_none, exclude_unset, indent, **kwargs)
 
 
-StructuredData = Union[SinglePointData, OptimizationData, ConformerSearchData]
+StructuredData = Union[SinglePointData, OptimizationData, ConformerSearchData, ScanData]
 StructuredDataType = TypeVar("StructuredDataType", bound=StructuredData)
 Data = Union[Files, StructuredData]
 DataType = TypeVar("DataType", bound=Data)
-
 
 @deprecated_class("SinglePointData")
 class SinglePointResults(SinglePointData):
