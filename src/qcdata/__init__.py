@@ -27,6 +27,7 @@ __all__ = [  # noqa: F405
     "SinglePointData",
     "OptimizationData",
     "ConformerSearchData",
+    "ScanData",
     "SinglePointResults",
     "OptimizationResults",
     "ConformerSearchResults",
