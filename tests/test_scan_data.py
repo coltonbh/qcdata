@@ -1,4 +1,4 @@
-from qcdata import ProgramOutput, ScanData
+from qcdata import ScanData
 
 ScanData.model_rebuild()
 
