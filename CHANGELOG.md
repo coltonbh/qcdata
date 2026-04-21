@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+## [0.17.1] - 2026-04-21
+
+### Added
+
+- `CalcType.scan` and `ScanData` [#102](https://github.com/coltonbh/qcdata/pull/102).
+
 ## [0.17.0] - 2026-03-26
 
 ### Changed
@@ -47,7 +53,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - 🚨Python 3.9 support. Minimum supported version is now 3.10. [#91](https://github.com/coltonbh/qcdata/pull/91)
 - All constants and periodic table data moved to [qcconst](https://github.com/coltonbh/qcconst).
 - All cheminformatics methods, including those that used `rdkit` and `openbabel` such as `rmsd` and `align`. Placed these algorithms into [qcinf](https://github.com/coltonbh/qcinf) so that `qcio` can remain purely about data structures. All future algorithms will go into `qcinf`.
-
   - `Structure.from_smiles()` method in favor of functional API using the `qcinf` `smiles_to_structure` function.
 
     ```python
@@ -653,7 +658,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   - `SinglePointComputedProperties`
   - `Wavefunction`
 
-[unreleased]: https://github.com/coltonbh/qcdata/compare/0.17.0...HEAD
+[unreleased]: https://github.com/coltonbh/qcdata/compare/0.17.1...HEAD
+[0.17.1]: https://github.com/coltonbh/qcdata/releases/tag/0.17.1
 [0.17.0]: https://github.com/coltonbh/qcdata/releases/tag/0.17.0
 [0.16.2]: https://github.com/coltonbh/qcdata/releases/tag/0.16.2
 [0.16.1]: https://github.com/coltonbh/qcdata/releases/tag/0.16.1
