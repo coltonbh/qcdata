@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+## [0.17.2] - 2026-05-31
+
 ### Added
 
 - `ProgramInput.structures` and `DualProgramInput.structures` for additional named structures required by calculations with multiple complete structure inputs, while keeping `.structure` as the required primary/start/reference structure. [#103](https://github.com/coltonbh/qcdata/pull/103) by [@coltonbh](https://github.com/coltonbh).
@@ -662,7 +664,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   - `SinglePointComputedProperties`
   - `Wavefunction`
 
-[unreleased]: https://github.com/coltonbh/qcdata/compare/0.17.1...HEAD
+[unreleased]: https://github.com/coltonbh/qcdata/compare/0.17.2...HEAD
+[0.17.2]: https://github.com/coltonbh/qcdata/releases/tag/0.17.2
 [0.17.1]: https://github.com/coltonbh/qcdata/releases/tag/0.17.1
 [0.17.0]: https://github.com/coltonbh/qcdata/releases/tag/0.17.0
 [0.16.2]: https://github.com/coltonbh/qcdata/releases/tag/0.16.2
