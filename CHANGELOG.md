@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Added
+
+- `ProgramInput.structures` and `DualProgramInput.structures` for additional named structures required by calculations with multiple complete structure inputs, while keeping `.structure` as the required primary/start/reference structure. [#103](https://github.com/coltonbh/qcdata/pull/103) by [@coltonbh](https://github.com/coltonbh).
+
 ## [0.17.1] - 2026-04-21
 
 ### Added
