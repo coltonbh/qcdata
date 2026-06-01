@@ -58,9 +58,13 @@ class _StructureKeywordsMixin(_KeywordsMixin):
     """
     Attributes:
         structure: The structure to be used in the calculation.
+        structures: Additional named structures required by the calculation. The
+            primary/start/reference structure should remain in `structure`; this field
+            is for other complete structures such as a product endpoint in NEB.
     """
 
     structure: Structure
+    structures: dict[str, Structure] = {}
 
     def __init__(self, **data: Any):
         """Backwards compatibility for 'molecule' attribute."""
@@ -156,6 +160,8 @@ class ProgramInput(ProgramArgs, _StructureKeywordsMixin):
         keywords Dict[str, Any]: A dict of keywords to be passed to the program
             excluding model and calctype. Defaults to an empty dict.
         structure Structure: The structure to be used in the calculation.
+        structures Dict[str, Structure]: Additional named structures required by the
+            calculation. Defaults to an empty dict.
         files Files: Files to be passed to the QC program.
         extras Dict[str, Any]: Additional information to bundle with the object. Use
             for schema development and scratch space.
@@ -165,12 +171,14 @@ class ProgramInput(ProgramArgs, _StructureKeywordsMixin):
         from qcdata.models import ProgramInput, Structure
 
         struct = Structure.open("path/to/structure.xyz")
+        product_struct = Structure.open("path/to/product_structure.xyz")
 
         prog_inp = ProgramInput(
             calctype = "energy",
             structure = struct,
             model = {"method": "hf", "basis": "6-31G"},
             keywords = {"maxsteps": "250"},  # Optional
+            structures = {"product": product_struct},  # Optional
             files = {"file1": b"binary data"}  # Optional
         )
         ```
@@ -193,6 +201,8 @@ class DualProgramInput(ProgramArgsSub, ProgramInput):
         keywords Dict[str, Any]: A dict of keywords to be passed to the program
             excluding model and calctype. Defaults to an empty dict.
         structure Structure: The structure to be used in the calculation.
+        structures Dict[str, Structure]: Additional named structures required by the
+            calculation. Defaults to an empty dict.
         files Files: Files to be passed to the QC program.
         subprogram: The name of the subprogram to use.
         subprogram_args ProgramArgs: The ProgramArgs for the subprogram.

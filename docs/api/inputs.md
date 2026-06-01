@@ -2,6 +2,8 @@ Data structures for specifying quantum chemistry calculations. The most commonly
 
 A `DualProgramInput` is used when two inputs are required for a calculation. For example, doing a geometry optimization with `geomeTRIC` while using a `subprogram` like `TeraChem` or `Psi4` to compute the gradients.
 
+`ProgramInput.structure` is always the primary/start/reference structure for the calculation. Calculations that require additional complete structures can provide them by role name with `ProgramInput.structures`, for example `structures={"product": product_structure}` for a nudged elastic band calculation where `structure` is the reactant endpoint. Calculation-specific tools should validate which structure names are required.
+
 A `FileInput` is an escape hatch that allows you to run _any_ calculation in any QC program (or any program for that matter), even if it isn't a supported [`CalcType`](./calctype.md) in `qcdata` yet. You can use a `FileInput` to store the native input files (text and binary) for a QC program along with the relevant command line args. Using [qcop](https://github.com/coltonbh/qcop) you can submit a `FileInput` to a QC program and all output files and `logs` produced by that program will be collected and returned in a user-friendly [`ProgramOutput`](./outputs.md) object. `FileInput` allows you to continue to use `qcdata` even for calculations that haven't yet been standardized.
 
   

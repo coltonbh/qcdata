@@ -2781,46 +2781,8 @@ wheels = [
 ]
 
 [[package]]
-name = "qcelemental"
-version = "0.29.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "numpy", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' and python_full_version < '3.13'" },
-    { name = "packaging" },
-    { name = "pint", version = "0.24.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "pint", version = "0.25", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' and python_full_version < '3.13'" },
-    { name = "pydantic" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/e7/ad/1cf6bb9eec08e7455b6c5736c322bbc42f81dc847898d18cf00e9ec9871f/qcelemental-0.29.0.tar.gz", hash = "sha256:bf634ee652e7d95e906e291989513224233b1d705c26afeac86e451f316b3c04", size = 306949 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/57/7a/1fbdf6bb344e8c92c64080a64d9d811ae4eb6d5d3233e1b9ca803296024f/qcelemental-0.29.0-py3-none-any.whl", hash = "sha256:248420b1766489c48b72aaa5f306240f8c305a08e5a4b01c7cb305d6d831967f", size = 339642 },
-]
-
-[[package]]
-name = "qcinf"
-version = "0.2.1"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "pydantic" },
-    { name = "qcconst" },
-    { name = "qcdata" },
-    { name = "typing-extensions" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/1e/91/22962d2356bec6a8ea09dd8ee919fb538a51e60f6c07f7d39f42c9339965/qcinf-0.2.1.tar.gz", hash = "sha256:2d50219bd9813b7da6931994aeb7e2f1d189f325556b2f41e024f65211701c66", size = 76791 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/3d/35/9928adc3cbc94cc027a9d84b3c39d382eeddf36ba121d673daa6593667e2/qcinf-0.2.1-py3-none-any.whl", hash = "sha256:4968a4c0f50519fc4237742d2aa198dd0d4e18209a3b1f17fc5e1f6b923e6e60", size = 14669 },
-]
-
-[package.optional-dependencies]
-all = [
-    { name = "openbabel-wheel" },
-    { name = "rdkit" },
-]
-
-[[package]]
 name = "qcdata"
-version = "0.16.2"
+version = "0.17.1"
 source = { editable = "." }
 dependencies = [
     { name = "eval-type-backport" },
@@ -2925,6 +2887,63 @@ docs = [
     { name = "mkdocstrings", extras = ["python"], specifier = ">=0.25.2" },
     { name = "mknotebooks", specifier = ">=0.8.0" },
     { name = "pymdown-extensions", specifier = ">=10.8.1" },
+]
+
+[[package]]
+name = "qcelemental"
+version = "0.29.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "numpy", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' and python_full_version < '3.13'" },
+    { name = "packaging" },
+    { name = "pint", version = "0.24.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "pint", version = "0.25", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' and python_full_version < '3.13'" },
+    { name = "pydantic" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e7/ad/1cf6bb9eec08e7455b6c5736c322bbc42f81dc847898d18cf00e9ec9871f/qcelemental-0.29.0.tar.gz", hash = "sha256:bf634ee652e7d95e906e291989513224233b1d705c26afeac86e451f316b3c04", size = 306949 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/57/7a/1fbdf6bb344e8c92c64080a64d9d811ae4eb6d5d3233e1b9ca803296024f/qcelemental-0.29.0-py3-none-any.whl", hash = "sha256:248420b1766489c48b72aaa5f306240f8c305a08e5a4b01c7cb305d6d831967f", size = 339642 },
+]
+
+[[package]]
+name = "qcinf"
+version = "0.2.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pydantic" },
+    { name = "qcconst" },
+    { name = "qcio" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/1e/91/22962d2356bec6a8ea09dd8ee919fb538a51e60f6c07f7d39f42c9339965/qcinf-0.2.1.tar.gz", hash = "sha256:2d50219bd9813b7da6931994aeb7e2f1d189f325556b2f41e024f65211701c66", size = 76791 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/3d/35/9928adc3cbc94cc027a9d84b3c39d382eeddf36ba121d673daa6593667e2/qcinf-0.2.1-py3-none-any.whl", hash = "sha256:4968a4c0f50519fc4237742d2aa198dd0d4e18209a3b1f17fc5e1f6b923e6e60", size = 14669 },
+]
+
+[package.optional-dependencies]
+all = [
+    { name = "openbabel-wheel" },
+    { name = "rdkit" },
+]
+
+[[package]]
+name = "qcio"
+version = "0.16.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "eval-type-backport" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "numpy", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "pydantic" },
+    { name = "pyyaml" },
+    { name = "qcconst" },
+    { name = "toml" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/55/0b/ac1e4e488d462a82643ea0611f1ff107752eb1a20ea20120a5ca76123865/qcio-0.16.2.tar.gz", hash = "sha256:8f4a32612a9b8570cd40e1e3b8a4e965f55c0f232da63bd821ae3945b8c13a04", size = 1479161 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/00/2e/e659ff5596693a80388fb360e18af07a73242726e6de8fb340e0c0bac942/qcio-0.16.2-py3-none-any.whl", hash = "sha256:753a66f9cb453f282178d6a20504892523b05677bc7582f13609aa7040a968ff", size = 37125 },
 ]
 
 [[package]]
