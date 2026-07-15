@@ -1,6 +1,4 @@
 import numpy as np
-import pytest
-from pydantic import ValidationError
 
 from qcdata import SinglePointData, Wavefunction
 
@@ -102,6 +100,8 @@ def test_wavefunction_to_numpy():
     assert wavefunction.scf_occupations_b.dtype == np.float64
 
 
-def test_ensure_result_present_on_single_point_data_validator():
-    with pytest.raises(ValidationError):
-        SinglePointData()
+def test_single_point_data_can_be_empty_for_partial_or_failed_outputs():
+    data = SinglePointData()
+    assert data.energy is None
+    assert data.gradient is None
+    assert data.hessian is None

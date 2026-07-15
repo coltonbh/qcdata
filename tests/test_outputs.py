@@ -117,6 +117,21 @@ def test_primary_result_must_be_present_on_success(prog_output):
             ProgramOutput[ProgramInput, SinglePointData](**po_dict)
 
 
+def test_primary_result_can_be_missing_on_failure(prog_input_factory):
+    pi_gradient = prog_input_factory("gradient")
+    output = ProgramOutput[ProgramInput, SinglePointData](
+        success=False,
+        input_data=pi_gradient,
+        data=SinglePointData(extras={"program_version": "3.0.2"}),
+        traceback="Fake traceback",
+        provenance={"program": "qcdata-test-suite"},
+    )
+    assert output.data.energy is None
+    assert output.data.gradient is None
+    assert output.data.hessian is None
+    assert output.data.extras == {"program_version": "3.0.2"}
+
+
 @pytest.mark.parametrize(
     "input_data, data, success, expected_input_type, expected_result_type",
     [

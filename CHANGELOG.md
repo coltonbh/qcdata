@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+### Changed
+
+- Moved single-point primary-result validation from `SinglePointData` to `ProgramOutput` so failed calculations can carry empty or partial `SinglePointData` while successful calculations still require their requested primary result.
+
 ## [0.17.2] - 2026-05-31
 
 ### Added

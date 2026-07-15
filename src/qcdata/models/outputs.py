@@ -139,7 +139,7 @@ class ProgramOutput(QCDataBaseModel, Generic[ProgramInputType, DataType]):
 
     @model_validator(mode="after")
     def ensure_primary_result_on_success(self) -> Self:
-        if type(self.data) is SinglePointData:
+        if self.success is True and type(self.data) is SinglePointData:
             calctype_val = self.input_data.calctype.value  # type: ignore
             assert getattr(self.data, calctype_val) is not None, (
                 f"Missing the primary result: {calctype_val}."

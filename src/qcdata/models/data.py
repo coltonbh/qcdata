@@ -148,17 +148,6 @@ class SinglePointData(Files, CalcInfoData):
         """Return the primary result of the calculation."""
         return getattr(self, calctype.value)
 
-    @model_validator(mode="after")
-    def _ensure_results(self) -> Self:
-        """Ensure that at least one result is present."""
-        if all(result is None for result in [self.energy, self.gradient, self.hessian]):
-            raise ValueError(
-                "SinglePointResults requires either an energy, gradient, or hessian "
-                "value."
-            )
-        return self
-
-
 class OptimizationData(Files, CalcInfoData):
     """Computed data for an optimization (may be for a minimum or transition state).
 
