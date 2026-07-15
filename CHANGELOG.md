@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [unreleased]
 
+## [0.18.0] - 2026-07-15
+
 ### Changed
 
 - Moved single-point primary-result validation from `SinglePointData` to `ProgramOutput` so failed calculations can carry empty or partial `SinglePointData` while successful calculations still require their requested primary result.
@@ -668,7 +670,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   - `SinglePointComputedProperties`
   - `Wavefunction`
 
-[unreleased]: https://github.com/coltonbh/qcdata/compare/0.17.2...HEAD
+[unreleased]: https://github.com/coltonbh/qcdata/compare/0.18.0...HEAD
+[0.18.0]: https://github.com/coltonbh/qcdata/releases/tag/0.18.0
 [0.17.2]: https://github.com/coltonbh/qcdata/releases/tag/0.17.2
 [0.17.1]: https://github.com/coltonbh/qcdata/releases/tag/0.17.1
 [0.17.0]: https://github.com/coltonbh/qcdata/releases/tag/0.17.0
